@@ -45,14 +45,14 @@ module ECDSA
     u1 = point_field.mod(e * s_inverted)    
     u2 = point_field.mod(signature.r * s_inverted)
     
-    # Step 5:
+    # Step 5
     r = group.generator.multiply_by_scalar(u1).add_to_point public_key.multiply_by_scalar(u2)
     raise InvalidSignatureError, 'R is infinity in step 5.' if r.infinity?
     
-    # Step 6:
-    xr = r.x  # TODO: double check if this is correct
+    # Step 6
+    xr = r.x
     
-    # Step 7:
+    # Step 7
     v = point_field.mod xr
     
     # Step 8

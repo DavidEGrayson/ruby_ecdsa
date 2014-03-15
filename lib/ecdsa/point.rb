@@ -103,7 +103,5 @@ module ECDSA
     def field
       group.field
     end
-    
-
   end
 end
