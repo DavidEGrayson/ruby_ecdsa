@@ -1,3 +1,5 @@
+# http://www.secg.org/collateral/sec1_final.pdf
+
 module ECDSA
   class Point
     attr_reader :group
@@ -34,13 +36,13 @@ module ECDSA
       return self if point.infinity?      
       
       # SEC1, section 2.2.1, rule 3
-      return group.infinity_point if x == point.x && y == @field.mod(-y)
+      return group.infinity_point if x == point.x && y == field.mod(-y)
       
       # SEC1, section 2.2.1, rule 4
       if x != point.x
-        gamma = @field.mod((point.y - y) * field.inverse(point.x - x))
-        sum_x = @field.mod(gamma*gamma - x - point.x)
-        sum_y = @field.mod(gamma*(point.x - sum_x) - point.y)
+        gamma = field.mod((point.y - y) * field.inverse(point.x - x))
+        sum_x = field.mod(gamma * gamma - x - point.x)
+        sum_y = field.mod(gamma * (x - sum_x) - y)
         return self.class.new(group, sum_x, sum_y)
       end
       
@@ -53,7 +55,10 @@ module ECDSA
     end
     
     def double
-      gamma = @field.mod((3 * x * x + @group.param_a) * field.inverse(2 * y))
+      gamma = field.mod((3 * x * x + @group.param_a) * field.inverse(2 * y))
+      new_x = field.mod(gamma * gamma - 2 * x)
+      new_y = field.mod(gamma * (x - new_x) - y)
+      self.class.new(group, new_x, new_y)
     end
     
     def multiply_by_scalar(i)
@@ -64,6 +69,7 @@ module ECDSA
           result = result.add_to_point(v)
         end
         v = v.double
+        i >>= 1
       end
       result
     end
