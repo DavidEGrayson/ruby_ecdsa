@@ -40,8 +40,9 @@ module ECDSA
     end
     
     # Step 4
-    u1 = field.mod(e * field.inverse(signature.s))
-    u2 = field.mod(signature.r * field.inverse(signature.s))
+    s_inverted = field.inverse(signature.s)
+    u1 = field.mod(e * s_inverted)
+    u2 = field.mod(signature.r * s_inverted)
     
     # Step 5:
     r = group.generator.multiply_by_scalar(u1).add_to_point public_key.multiply_by_scalar(u2)

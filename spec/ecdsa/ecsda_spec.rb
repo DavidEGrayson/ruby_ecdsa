@@ -43,7 +43,7 @@ describe ECDSA do
     end
     
     it 'can be verify the signature' do
-      result = ECDSA.valid_signature?(public_key, digest, signature)
+      result = ECDSA.check_signature!(public_key, digest, signature)
       expect(result).to eq true
     end
     
