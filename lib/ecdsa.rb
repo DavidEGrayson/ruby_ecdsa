@@ -15,7 +15,6 @@ module ECDSA
   # Algorithm taken from http://www.secg.org/collateral/sec1_final.pdf Section 4.1.4.
   def self.valid_signature?(public_key, digest, signature)
     check_signature! public_key, digest, signature
-    true
   rescue InvalidSignatureError
     false
   end
@@ -24,15 +23,40 @@ module ECDSA
     group = public_key.group
     field = group.field
     
-    # Rule 1: r and s must be in the field and non-zero
+    # Step 1: r and s must be in the field and non-zero
     raise InvalidSignatureError, 'r value is not the field.' if !field.include?(signature.r)
     raise InvalidSignatureError, 's value is not the field.' if !field.include?(signature.s)
     raise InvalidSignatureError, 'r is zero.' if signature.r.zero?
     raise InvalidSignatureError, 's is zero.' if signature.s.zero?
     
-    digest_num = convert_octet_string_to_bit_string(digest)
+    # Step 2 was already performed when the digest of the message was computed.
     
-    raise 'not done'
+    # Step 3: Convert octet string to number.
+    digest_num = convert_octet_string_to_bit_string(digest)    
+    if group.bit_length < 8 * digest.size
+      raise 'Have not yet written code to handle this case'
+    else
+      e = digest_num
+    end
+    
+    # Step 4
+    u1 = field.mod(e * field.inverse(signature.s))
+    u2 = field.mod(signature.r * field.inverse(signature.s))
+    
+    # Step 5:
+    r = group.generator.multiply_by_scalar(u1).add_to_point public_key.multiply_by_scalar(u2)
+    raise InvalidSignatureError, 'R is infinity in step 5.' if r.infinity?
+    
+    # Step 6:
+    xr = r.x  # TODO: double check if this is correct
+    
+    # Step 7:
+    v = field.mod xr
+    
+    # Step 8
+    raise InvalidSignatureError, 'v does not equal r.' if v != signature.r
+    
+    return true
   end
   
   # SEC1, Section 2.3.2.

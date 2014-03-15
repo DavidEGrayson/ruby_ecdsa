@@ -50,7 +50,7 @@ describe ECDSA do
     it 'can detect if the message is corrupted' do
       digest[2] = "\x44"
       result = ECDSA.valid_signature?(public_key, digest, signature)
-      expect(result).to eq true
+      expect(result).to eq false
     end
     
   end
