@@ -5,6 +5,12 @@ module ECDSA
   class Group
     attr_reader :generator
     
+    attr_reader :order
+    
+    attr_reader :param_a
+    
+    attr_reader :field
+    
     # These parameters are defined in http://www.secg.org/collateral/sec2_final.pdf
     #
     # - +p+: A prime number that defines the field used.  The field will be F_p.
@@ -35,6 +41,10 @@ module ECDSA
       x, y = decode_octet_string(octet_string)
       @generator = Point.new(self, x, y)
     end
+    
+    def infinity_point
+      @infinity_point ||= Point.new(self, :infinity)
+    end
 
     # The number of bits that it takes to represent a member of the field.
     # Log base 2 of the prime p, rounded up.    
@@ -42,8 +52,9 @@ module ECDSA
       @bit_length ||= compute_bit_length(@field.prime)
     end
     
-    # Verify that the point is a solution to the curve equation.
+    # Verify that the point is a solution to the curve's defining equation.
     def include?(point)
+      raise 'Group mismatch.' if point.group != self
       @field.mod(point.y * point.y) == @field.mod(point.x * point.x * point.x + @param_a * point.x + @param_b)
     end
     

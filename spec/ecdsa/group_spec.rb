@@ -18,5 +18,10 @@ describe ECDSA::Group do
     it 'generator point is on the curve' do
       expect(subject.include?(subject.generator)).to eq true
     end
+    
+    it 'has maybe the right order' do
+      # We didn't actually check that the order is prime.
+      expect(subject.generator.multiply_by_scalar(subject.order)).to eq subject.infinity_point
+    end
   end
 end
