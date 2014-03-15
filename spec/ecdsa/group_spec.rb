@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'prime'
 
 describe ECDSA::Group do
   describe ECDSA::Group::Secp256k1 do
@@ -20,7 +21,6 @@ describe ECDSA::Group do
     end
     
     it 'has maybe the right order' do
-      # We didn't actually check that the order is prime.
       expect(subject.generator.multiply_by_scalar(subject.order)).to eq subject.infinity_point
     end
   end

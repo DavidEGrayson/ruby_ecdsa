@@ -74,6 +74,8 @@ module ECDSA
         end
         x_string = octet_string[1, byte_size]
         y_string = octet_string[1 + byte_size, byte_size]
+        #x = ECDSA.convert_octet_string_to_bit_string(x_string)
+        #y = ECDSA.convert_octet_string_to_bit_string(y_string)
         x = x_string.bytes.inject { |n, b| (n << 8) + b }
         y = y_string.bytes.inject { |n, b| (n << 8) + b }
         [x, y]
