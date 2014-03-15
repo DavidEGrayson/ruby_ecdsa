@@ -40,7 +40,7 @@ module ECDSA
       return self if point.infinity?      
       
       # SEC1, section 2.2.1, rule 3
-      return group.infinity_point if x == point.x && y == field.mod(-y)
+      return group.infinity_point if x == point.x && y == field.mod(-point.y)
       
       # SEC1, section 2.2.1, rule 4
       if x != point.x
@@ -89,6 +89,10 @@ module ECDSA
     
     def infinity?
       !!@infinity
+    end
+    
+    def inspect
+      "<%s: %s, 0x%x, 0x%x>" % [self.class, group.name, x, y]
     end
     
     private
