@@ -3,6 +3,7 @@
 module ECDSA
   class Group
     Secp256k1 = new(
+      name: 'secp256k1',
       p: 0xFFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFE_FFFFFC2F,      
       a: 0,
       b: 7,

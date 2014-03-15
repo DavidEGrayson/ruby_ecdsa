@@ -3,6 +3,8 @@ require_relative 'point'
 
 module ECDSA
   class Group
+    attr_reader :name
+    
     attr_reader :generator
     
     attr_reader :order
@@ -22,6 +24,7 @@ module ECDSA
     def initialize(opts)
       @opts = opts
       
+      @name = opts.fetch(:name) { '%#x' % object_id }
       @field = PrimeField.new(opts[:p])
       @param_a = opts[:a]
       @param_b = opts[:b]
@@ -55,7 +58,16 @@ module ECDSA
     # Verify that the point is a solution to the curve's defining equation.
     def include?(point)
       raise 'Group mismatch.' if point.group != self
+      point.infinity? or point_satisfies_equation?(point)
+    end
+
+    # You should probably use include? instead of this.
+    def point_satisfies_equation?(point)
       @field.mod(point.y * point.y) == @field.mod(point.x * point.x * point.x + @param_a * point.x + @param_b)
+    end
+    
+    def inspect
+      "<#{self.class}:#{name}>"
     end
     
     private
