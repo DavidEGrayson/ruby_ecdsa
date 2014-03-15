@@ -20,12 +20,24 @@ describe ECDSA::Group do
       expect(subject.include?(subject.generator)).to eq true
     end
     
-    it 'has may be the right order' do
+    it 'has maybe the right order' do
       expect(subject.generator.multiply_by_scalar(subject.order)).to eq subject.infinity_point
     end
     
     it 'has a nice #inspect' do
       expect(subject.inspect).to eq '<ECDSA::Group:secp256k1>'
+    end
+  end
+  
+  describe ECDSA::Group::Nistp256 do
+    subject { ECDSA::Group::Nistp256 }
+  
+    it 'generator point is on the curve' do
+      expect(subject.include?(subject.generator)).to eq true
+    end
+    
+    it 'has maybe the right order' do
+      expect(subject.generator.multiply_by_scalar(subject.order)).to eq subject.infinity_point
     end
   end
 end

@@ -32,7 +32,7 @@ module ECDSA
     # Step 2 was already performed when the digest of the message was computed.
     
     # Step 3: Convert octet string to number.
-    digest_num = convert_octet_string_to_bit_string(digest)    
+    digest_num = convert_digest_to_integer(digest)    
     if group.bit_length < 8 * digest.size
       raise 'Have not yet written code to handle this case'
     else
@@ -40,9 +40,10 @@ module ECDSA
     end
     
     # Step 4
-    s_inverted = field.inverse(signature.s)
-    u1 = field.mod(e * s_inverted)
-    u2 = field.mod(signature.r * s_inverted)
+    point_field = PrimeField.new(group.order)
+    s_inverted = point_field.inverse(signature.s)
+    u1 = point_field.mod(e * s_inverted)    
+    u2 = point_field.mod(signature.r * s_inverted)
     
     # Step 5:
     r = group.generator.multiply_by_scalar(u1).add_to_point public_key.multiply_by_scalar(u2)
@@ -52,12 +53,20 @@ module ECDSA
     xr = r.x  # TODO: double check if this is correct
     
     # Step 7:
-    v = field.mod xr
+    v = point_field.mod xr
     
     # Step 8
     raise InvalidSignatureError, 'v does not equal r.' if v != signature.r
     
     return true
+  end
+  
+  def self.convert_digest_to_integer(digest)
+    case digest
+    when Integer then digest
+    when String then convert_octet_string_to_bit_string(digest)
+    else raise "Invalid digest: #{digest.inspect}"
+    end
   end
   
   # SEC1, Section 2.3.2.

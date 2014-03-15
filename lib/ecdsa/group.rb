@@ -32,17 +32,26 @@ module ECDSA
       @order = opts[:n]
       @cofactor = opts[:h]
       
-      @field.include?(@param_a) or raise ArgumentError, 'Invalid a.'
-      @field.include?(@param_b) or raise ArgumentError, 'Invalid b.'
+      @param_a.is_a?(Integer) or raise ArgumentError, 'Invalid a.'
+      @param_b.is_a?(Integer) or raise ArgumentError, 'Invalid b.'
+      
+      @param_a = field.mod @param_a
+      @param_b = field.mod @param_b
     end
     
     # TODO: allow generating points from:
     #  compressed octet strings
     #  [x, y]  (public key numbers)
     #  a       (private key number)
-    def new_point(octet_string)
-      x, y = decode_octet_string(octet_string)
-      Point.new(self, x, y)
+    def new_point(arg)
+      x, y = if arg.is_a?(Array)
+               arg
+             elsif arg.is_a?(String)
+               decode_octet_string(arg)
+             else
+               raise ArgumentError, "Invalid point specifier #{arg.inspect}."
+             end
+      Point.new(self, x, y)      
     end
     
     def infinity_point
@@ -105,5 +114,6 @@ module ECDSA
   
     public
     autoload :Secp256k1, 'ecdsa/group/secp256k1'
+    autoload :Nistp256, 'ecdsa/group/nistp256'
   end
 end
