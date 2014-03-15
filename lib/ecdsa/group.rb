@@ -39,7 +39,7 @@ module ECDSA
     #  a       (private key number)
     def new_point(octet_string)
       x, y = decode_octet_string(octet_string)
-      @generator = Point.new(self, x, y)
+      Point.new(self, x, y)
     end
     
     def infinity_point
@@ -60,7 +60,7 @@ module ECDSA
     
     private
     def decode_octet_string(octet_string)
-      octet_string = octet_string.force_encoding('BINARY')
+      octet_string = octet_string.dup.force_encoding('BINARY')
       first_byte = octet_string[0].ord
       if first_byte == 0x04
         if bit_length % 8 != 0
@@ -74,10 +74,8 @@ module ECDSA
         end
         x_string = octet_string[1, byte_size]
         y_string = octet_string[1 + byte_size, byte_size]
-        #x = ECDSA.convert_octet_string_to_bit_string(x_string)
-        #y = ECDSA.convert_octet_string_to_bit_string(y_string)
-        x = x_string.bytes.inject { |n, b| (n << 8) + b }
-        y = y_string.bytes.inject { |n, b| (n << 8) + b }
+        x = ECDSA.convert_octet_string_to_bit_string(x_string)
+        y = ECDSA.convert_octet_string_to_bit_string(y_string)
         [x, y]
       else
         raise 'Cannot handle octet strings starting with 0x%02x' % first_byte

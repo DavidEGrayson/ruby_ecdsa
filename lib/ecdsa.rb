@@ -1,6 +1,12 @@
 require_relative 'ecdsa/group'
 require_relative 'ecdsa/signature'
 
+class String
+  def hex_inspect
+    '"' + each_byte.collect { |b| '\x%02x' % b}.join + '"'
+  end
+end
+
 module ECDSA
 
   class InvalidSignatureError < StandardError
