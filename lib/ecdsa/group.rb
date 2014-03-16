@@ -119,7 +119,7 @@ module ECDSA
     public
     autoload :Secp256k1, 'ecdsa/group/secp256k1'
     autoload :Nistp192, 'ecdsa/group/nistp192'
-    #autoload :Nistp224, 'ecdsa/group/nistp224'
+    autoload :Nistp224, 'ecdsa/group/nistp224'
     autoload :Nistp256, 'ecdsa/group/nistp256'
     #autoload :Nistp384, 'ecdsa/group/nistp384'
     #autoload :Nistp521, 'ecdsa/group/nistp521'
