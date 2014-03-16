@@ -80,7 +80,11 @@ module ECDSA
     end
     
     def inspect
-      "<#{self.class}:#{name}>"
+      "#<#{self.class}:#{name}>"
+    end
+    
+    def to_s
+      inspect
     end
     
     private
@@ -89,6 +93,7 @@ module ECDSA
       first_byte = octet_string[0].ord
       if first_byte == 0x04
         if bit_length % 8 != 0
+          # TODO: handle this case, because it will be needed for the P-521 curve
           raise 'Don\'t know how to handle bit lengths that are not a multiple of 8 (1 byte).'
         end
         
@@ -122,6 +127,6 @@ module ECDSA
     autoload :Nistp224, 'ecdsa/group/nistp224'
     autoload :Nistp256, 'ecdsa/group/nistp256'
     autoload :Nistp384, 'ecdsa/group/nistp384'
-    #autoload :Nistp521, 'ecdsa/group/nistp521'
+    autoload :Nistp521, 'ecdsa/group/nistp521'
   end
 end

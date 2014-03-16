@@ -27,7 +27,11 @@ describe ECDSA::Group do
     end
     
     it 'has a nice #inspect' do
-      expect(subject.inspect).to eq '<ECDSA::Group:secp256k1>'
+      expect(subject.inspect).to eq '#<ECDSA::Group:secp256k1>'
+    end
+    
+    it 'has a nice #to_s' do
+      expect(subject.to_s).to eq '#<ECDSA::Group:secp256k1>'
     end
     
     it_behaves_like 'group'
@@ -43,4 +47,8 @@ describe ECDSA::Group do
     it_behaves_like 'group'
   end
 
+  describe ECDSA::Group::Nistp521 do
+    subject { ECDSA::Group::Nistp521 }
+    it_behaves_like 'group'
+  end
 end
