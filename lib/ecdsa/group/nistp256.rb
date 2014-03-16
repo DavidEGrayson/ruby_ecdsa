@@ -1,4 +1,4 @@
-# Source: "Curve P-256" from http://csrc.nist.gov/groups/ST/toolkit/documents/dss/NISTReCur.doc
+# Source: http://csrc.nist.gov/groups/ST/toolkit/documents/dss/NISTReCur.pdf
 
 module ECDSA
   class Group

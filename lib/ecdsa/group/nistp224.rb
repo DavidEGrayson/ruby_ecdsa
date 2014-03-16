@@ -3,7 +3,7 @@
 module ECDSA
   class Group
     Nistp224 = new(
-      name: 'nistp192',
+      name: 'nistp224',
       p: 26959946667150639794667015087019630673557916_260026308143510066298881,      
       a: -3,
       b: 0xb4050a85_0c04b3ab_f5413256_5044b0b7_d7bfd8ba_270b3943_2355ffb4,

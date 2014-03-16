@@ -1,15 +1,16 @@
-# Source: "Curve P-256" from http://csrc.nist.gov/groups/ST/toolkit/documents/dss/NISTReCur.doc
+# Source: http://csrc.nist.gov/groups/ST/toolkit/documents/dss/NISTReCur.pdf
 
 module ECDSA
   class Group
-    Nistp244 = new(
-      name: 'nistp192',
-      p: ,      
+    Nistp384 = new(
+      name: 'nistp384',
+      p: 39402006196394479212279040100143613805079739_27046544666794829340424572177149687032904726_6088258938001861606973112319,      
       a: -3,
-      b: ,
-      g: [,
-          ],
-      n: ,
+      b: 0xb3312fa7_e23ee7e4_988e056b_e3f82d19_181d9c6e_fe814112_0314088f_5013875a_c656398d_8a2ed19d_2a85c8ed_d3ec2aef,
+      g: [0xaa87ca22_be8b0537_8eb1c71e_f320ad74_6e1d3b62_8ba79b98_59f741e0_82542a38_5502f25d_bf55296c_3a545e38_72760ab7,
+          0x3617de4a_96262c6f_5d9e98bf_9292dc29_f8f41dbd_289a147c_e9da3113_b5f0b8c0_0a60b1ce_1d7e819d_7a431d7c_90ea0e5f,
+         ],
+      n: 39402006196394479212279040100143613805079739_27046544666794690527962765939911326356939895_6308152294913554433653942643,
       h: nil,  # cofactor not given in NIST document
     )
   end

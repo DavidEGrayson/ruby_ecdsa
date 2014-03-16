@@ -2,8 +2,8 @@
 
 module ECDSA
   class Group
-    Nistp244 = new(
-      name: 'nistp192',
+    Nistp521 = new(
+      name: 'nistp521',
       p: ,      
       a: -3,
       b: ,
