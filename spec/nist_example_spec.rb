@@ -5,32 +5,29 @@ require 'spec_helper'
 
 describe 'NIST P-192 examples' do
   let(:group) { ECDSA::Group::Nistp192 }
+  let(:d) { 0x78916860_32FD8057_F636B44B_1F47CCE5_64D25099_23A7465B }
 
-  describe 'private key generation with C and D' do
-    let(:c) { 0x78916860_32FD8057_F636B44B_1F47CCE5_64D25099_23A7465A }
-
-    it 'gives the right coordinates' do
-      d = (c % (group.order - 1)) + 1
-      point = group.new_point(d)
-      expect(point.coords).to eq [
-        0xFBA2AAC6_47884B50_4EB8CD5A_0A1287BA_BCC62163_F606A9A2,
-        0xDAE6D4CC_05EF4F27_D79EE38B_71C9C8EF_4865D988_50D84AA5,
-      ]
-    end
+  specify 'private key generation with C and D' do    
+    point = group.new_point(d)
+    expect(point.coords).to eq [
+      0xFBA2AAC6_47884B50_4EB8CD5A_0A1287BA_BCC62163_F606A9A2,
+      0xDAE6D4CC_05EF4F27_D79EE38B_71C9C8EF_4865D988_50D84AA5,
+    ]
   end
+  
+  # TODO: figure out how the private key generation with K works in ECDSA_Prime.pdf
+  # All I know is that k is one more than c but I don't know how to get a point from K.
 
-  describe 'private key generation with K' do
-    let(:k) { 0xD06CB0A0_EF2F708B_0744F08A_A06B6DEE_DEA9C0F8_0A69D847 }
-
-    it 'gives the right coordinates' do
-      point = group.new_point(k)
-      expect(point.coords).to eq [
-        0xFBA2AAC6_47884B50_4EB8CD5A_0A1287BA_BCC62163_F606A9A2,
-        0xDAE6D4CC_05EF4F27_D79EE38B_71C9C8EF_4865D988_50D84AA5,
-      ]
-    end
+  specify 'signature generation' do
+    e = 0x1B376F0B_735C615C_EEEB31BA_EE654B0A_374825DB
+    k = 0xD06CB0A0_EF2F708B_0744F08A_A06B6DEE_DEA9C0F8_0A69D847  # (the random number)
+    signature = ECDSA.sign(group, d, e, k)
+    expect(signature.components).to eq [
+      0xF0ECBA72_B88CDE39_9CC5A18E_2A8B7DA5_4D81D04F_B9802821,
+      0x1E6D3D4A_E2B1FAB2_BD2040F5_DABF00F8_54FA140B_6D21E8ED,
+    ]
   end
-
+  
 end
 
 describe 'NIST P-256 signature verification example' do
