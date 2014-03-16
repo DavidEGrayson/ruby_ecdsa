@@ -1,6 +1,39 @@
 require 'spec_helper'
 
-describe 'nist P-256 signature verification example' do
+# Examples came from http://csrc.nist.gov/groups/ST/toolkit/documents/Examples/ECDSA_Prime.pdf
+
+describe 'NIST P-192 examples' do
+  let(:group) { ECDSA::Group::Nistp192 }
+  
+  describe 'private key generation with C and D' do
+    let(:c) { 0x78916860_32FD8057_F636B44B_1F47CCE5_64D25099_23A7465A }
+    
+    it 'gives the right coordinates' do
+      pending 'not sure how this works since the test below did not pass'
+      point = group.new_point(c)
+      expect(point.coords).to eq [
+        0xFBA2AAC6_47884B50_4EB8CD5A_0A1287BA_BCC62163_F606A9A2,
+        0xDAE6D4CC_05EF4F27_D79EE38B_71C9C8EF_4865D988_50D84AA5,
+      ]
+    end
+  end
+  
+  describe 'private key generation with K' do
+    let(:k) { 0xD06CB0A0_EF2F708B_0744F08A_A06B6DEE_DEA9C0F8_0A69D847 }
+    
+    it 'gives the right coordinates' do
+      pending 'not sure how this works since the test below did not pass'
+      point = group.new_point(k)
+      expect(point.coords).to eq [
+        0xFBA2AAC6_47884B50_4EB8CD5A_0A1287BA_BCC62163_F606A9A2,
+        0xDAE6D4CC_05EF4F27_D79EE38B_71C9C8EF_4865D988_50D84AA5,
+      ]
+    end
+  end
+  
+end
+
+describe 'NIST P-256 signature verification example' do
 
   let(:group) do
     ECDSA::Group::Nistp256

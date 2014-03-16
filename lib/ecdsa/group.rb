@@ -43,15 +43,19 @@ module ECDSA
     #  compressed octet strings
     #  [x, y]  (public key numbers)
     #  a       (private key number)
-    def new_point(arg)
-      x, y = if arg.is_a?(Array)
-               arg
-             elsif arg.is_a?(String)
-               decode_octet_string(arg)
-             else
-               raise ArgumentError, "Invalid point specifier #{arg.inspect}."
-             end
-      Point.new(self, x, y)      
+    def new_point(p)
+      case p
+      when Array
+        x, y = p
+        Point.new(self, x, y)
+      when String
+        x, y = decode_octet_string p
+        Point.new(self, x, y)
+      when Integer
+        generator.multiply_by_scalar(p)
+      else
+        raise ArgumentError, "Invalid point specifier #{p.inspect}."
+      end
     end
     
     def infinity_point
@@ -114,6 +118,10 @@ module ECDSA
   
     public
     autoload :Secp256k1, 'ecdsa/group/secp256k1'
+    autoload :Nistp192, 'ecdsa/group/nistp192'
+    #autoload :Nistp224, 'ecdsa/group/nistp224'
     autoload :Nistp256, 'ecdsa/group/nistp256'
+    #autoload :Nistp384, 'ecdsa/group/nistp384'
+    #autoload :Nistp521, 'ecdsa/group/nistp521'
   end
 end

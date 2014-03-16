@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe ECDSA do
   describe 'bitcoin alert message' do
-
+    # The data for this spec came from https://en.bitcoin.it/wiki/Protocol_specification#alert
+  
     let(:group) do
       ECDSA::Group::Secp256k1
     end
@@ -42,7 +43,7 @@ describe ECDSA do
       expect(group).to include public_key
     end
     
-    it 'can be verify the signature' do
+    it 'can verify the signature' do
       result = ECDSA.check_signature!(public_key, digest, signature)
       expect(result).to eq true
     end
