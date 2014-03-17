@@ -70,6 +70,10 @@ module ECDSA
       @bit_length ||= ECDSA.bit_length(field.prime)
     end
 
+    def byte_length
+      @byte_length ||= ECDSA.byte_length(field.prime)
+    end
+
     # Verify that the point is a solution to the curve's defining equation.
     def include?(point)
       raise 'Group mismatch.' if point.group != self

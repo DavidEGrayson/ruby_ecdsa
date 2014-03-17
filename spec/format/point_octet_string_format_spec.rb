@@ -48,4 +48,40 @@ describe ECDSA::Format::PointOctetString do
     end
   end
   
+  describe '#decode' do
+    let(:converter) do
+      lambda { |p| ECDSA::Format::PointOctetString.decode(p, group) }
+    end
+    
+    it 'raises an error for the empty string' do
+      expect{ converter.call('') }.to raise_error ECDSA::Format::DecodeError,
+        'Point octet string is empty.'
+    end
+
+    it 'decodes "\x00" to infinity' do
+      expect(converter.call("\x00")).to eq group.infinity_point
+    end
+    
+    it 'raises an error if the start byte is not recognized' do
+      expect { converter.call("\x12") }.to raise_error ECDSA::Format::DecodeError,
+        'Unrecognized start byte for point octet string: 0x12'
+    end
+    
+    it 'raises an error if the string starts with 0x00 but is more than 1 byte' do
+      expect { converter.call("\x00\x00") }.to raise_error ECDSA::Format::DecodeError,
+        "Expected point octet string to be length 1 but it was 2."
+    end
+    
+    [2, 3].each do |start_byte|
+      it "raises an error if string starts with #{start_byte} but is the wrong length" do
+        expect { converter.call(start_byte.chr + "...") }.to raise_error ECDSA::Format::DecodeError,
+          "Expected point octet string to be length 15 but it was 4."
+      end
+    end
+    
+    it "raises an error if string starts with 4 but is the wrong length" do
+      expect { converter.call("\x04...") }.to raise_error ECDSA::Format::DecodeError,
+        "Expected point octet string to be length 29 but it was 4."
+    end
+  end
 end

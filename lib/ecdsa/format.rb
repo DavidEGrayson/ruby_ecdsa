@@ -1,7 +1,4 @@
-module ECDSA
-  module Format
-    autoload :PointOctetString, 'ecdsa/format/point_octet_string'
-    autoload :IntegerOctetString, 'ecdsa/format/integer_octet_string'
-    autoload :FieldElementOctetString, 'ecdsa/format/field_element_octet_string'
-  end
-end
+require 'ecdsa/format/decode_error'
+require 'ecdsa/format/point_octet_string'
+require 'ecdsa/format/integer_octet_string'
+require 'ecdsa/format/field_element_octet_string'
