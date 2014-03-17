@@ -49,6 +49,18 @@ module ECDSA
       def self.decode_uncompressed(string, group)
         expected_length = 1 + 2 * group.byte_length
         check_length string, expected_length
+        
+        x_string = string[1, group.byte_length]
+        y_string = string[1 + group.byte_length, group.byte_length]
+        x = ECDSA::Format::FieldElementOctetString.decode x_string, group.field
+        y = ECDSA::Format::FieldElementOctetString.decode y_string, group.field
+        
+        point = group.new_point [x, y]
+        if !group.include? point
+          raise DecodeError, "Decoded point does not satisfy curve equation: #{point.inspect}."
+        end
+        
+        point
       end
 
       def self.check_length(string, expected_length)

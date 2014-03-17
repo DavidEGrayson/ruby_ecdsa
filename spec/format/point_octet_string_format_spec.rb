@@ -83,5 +83,31 @@ describe ECDSA::Format::PointOctetString do
       expect { converter.call("\x04...") }.to raise_error ECDSA::Format::DecodeError,
         "Expected point octet string to be length 29 but it was 4."
     end
+
+    it 'can decode an uncompressed point' do
+      str = "\x04" \
+            "\x09\x48\x72\x39\x99\x5A\x5E\xE7\x6B\x55\xF9\xC2\xF0\x98" \
+            "\xA8\x9C\xE5\xAF\x87\x24\xC0\xA2\x3E\x0E\x0F\xF7\x75\x00"
+            
+      expect(converter.call(str)).to eq group.generator
+    end
+    
+    pending 'can decode a compressed point starting with 0x02' do
+    
+    end
+    
+    pending 'can decode a compressed point start with 0x03' do
+    
+    end
+    
+    it 'raises an error if the point is not actually on the curve' do
+      str = "\x04" \
+        "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x08" \
+        "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x09"
+        
+      expect { converter.call(str) }.to raise_error ECDSA::Format::DecodeError,
+        'Decoded point does not satisfy curve equation: #<ECDSA::Point: secp112r1, 0x8, 0x9>.'
+    end
+    
   end
 end

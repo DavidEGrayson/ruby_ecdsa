@@ -1,5 +1,6 @@
-# Defined in http://www.secg.org/collateral/sec1_final.pdf
-# section 2.3.7: Integer-to-OctetString Conversion
+# Defined in http://www.secg.org/collateral/sec1_final.pdf :
+# Section 2.3.7: Integer-to-OctetString Conversion
+# Section 2.3.8: OctetString-to-Integer Conversion
 
 module ECDSA
   module Format
@@ -13,6 +14,14 @@ module ECDSA
         length.pred.downto(0).collect do |i|
           integer >> (8*i)
         end.pack('C*')
+      end
+      
+      def self.decode(string)
+        integer = 0
+        string.each_byte do |b|
+          integer = (integer << 8) + b.ord
+        end
+        integer
       end
     end
   end
