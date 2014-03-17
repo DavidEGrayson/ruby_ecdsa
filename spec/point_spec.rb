@@ -38,10 +38,14 @@ describe ECDSA::Point do
   end
   
   describe '#inspect' do
-    it 'is nice' do
-      expect(group.generator.inspect).to eq "<ECDSA::Point: secp256k1, " \
-        "0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798, " \
-        "0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8>"
+    it 'shows the coordinates if the point has them' do
+      expect(group.generator.inspect).to eq '#<ECDSA::Point: secp256k1, ' \
+        '0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798, ' \
+        '0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8>'
+    end
+    
+    it 'shows infinity if the point is infinity' do
+      expect(group.infinity_point.inspect).to eq '#<ECDSA::Point: secp256k1, infinity>'
     end
   end
 end
