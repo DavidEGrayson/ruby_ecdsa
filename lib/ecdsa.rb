@@ -2,8 +2,10 @@ require_relative 'ecdsa/group'
 require_relative 'ecdsa/signature'
 require_relative 'ecdsa/verify'
 require_relative 'ecdsa/sign'
+require_relative 'ecdsa/format'
 
-module ECDSA  
+module ECDSA
+
   def self.convert_digest_to_integer(digest)
     case digest
     when Integer then digest

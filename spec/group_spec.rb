@@ -16,6 +16,30 @@ shared_examples_for 'group' do
 end
 
 describe ECDSA::Group do
+  subject { ECDSA::Group::Secp256k1 }
+    
+  it '#inspect is nice' do
+    expect(subject.inspect).to eq '#<ECDSA::Group:secp256k1>'
+  end
+  
+  it '#to_s is the same as inspect' do
+    expect(subject.to_s).to eq subject.inspect
+  end
+  
+  describe '#infinity_point' do
+    it 'returns the infinity point' do
+      expect(subject.infinity_point).to be_infinity
+    end
+  end
+  
+  describe '#new_point' do
+    it 'when given :infinity, returns the infinity point' do
+      expect(subject.new_point(:infinity)).to eq subject.infinity_point
+    end
+  end
+end
+
+describe "specific groups" do
   describe ECDSA::Group::Secp256k1 do
     subject { ECDSA::Group::Secp256k1 }
   
@@ -28,14 +52,6 @@ describe ECDSA::Group do
         0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798,
         0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8,
       ]
-    end
-    
-    it 'has a nice #inspect' do
-      expect(subject.inspect).to eq '#<ECDSA::Group:secp256k1>'
-    end
-    
-    it 'has a #to_s that is the same as inspect' do
-      expect(subject.to_s).to eq subject.inspect
     end
   end
   

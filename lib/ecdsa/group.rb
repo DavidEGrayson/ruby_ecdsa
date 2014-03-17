@@ -45,6 +45,8 @@ module ECDSA
     #  a       (private key number)
     def new_point(p)
       case p
+      when :infinity
+        infinity_point
       when Array
         x, y = p
         Point.new(self, x, y)
