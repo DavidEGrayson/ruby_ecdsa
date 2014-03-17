@@ -4,15 +4,15 @@ require_relative 'point'
 module ECDSA
   class Group
     attr_reader :name
-    
+
     attr_reader :generator
-    
+
     attr_reader :order
-    
+
     attr_reader :param_a
-    
+
     attr_reader :field
-    
+
     # These parameters are defined in http://www.secg.org/collateral/sec2_final.pdf
     #
     # - +p+: A prime number that defines the field used.  The field will be F_p.
@@ -23,7 +23,7 @@ module ECDSA
     # - +h+: The cofactor.
     def initialize(opts)
       @opts = opts
-      
+
       @name = opts.fetch(:name) { '%#x' % object_id }
       @field = PrimeField.new(opts[:p])
       @param_a = opts[:a]
@@ -31,14 +31,14 @@ module ECDSA
       @generator = new_point(@opts[:g])
       @order = opts[:n]
       @cofactor = opts[:h]
-      
+
       @param_a.is_a?(Integer) or raise ArgumentError, 'Invalid a.'
       @param_b.is_a?(Integer) or raise ArgumentError, 'Invalid b.'
-      
+
       @param_a = field.mod @param_a
       @param_b = field.mod @param_b
     end
-    
+
     # TODO: allow generating points from:
     #  compressed octet strings
     #  [x, y]  (public key numbers)
@@ -57,17 +57,17 @@ module ECDSA
         raise ArgumentError, "Invalid point specifier #{p.inspect}."
       end
     end
-    
+
     def infinity_point
       @infinity_point ||= Point.new(self, :infinity)
     end
 
     # The number of bits that it takes to represent a member of the field.
-    # Log base 2 of the prime p, rounded up.    
+    # Log base 2 of the prime p, rounded up.
     def bit_length
       @bit_length ||= compute_bit_length(@field.prime)
     end
-    
+
     # Verify that the point is a solution to the curve's defining equation.
     def include?(point)
       raise 'Group mismatch.' if point.group != self
@@ -78,15 +78,15 @@ module ECDSA
     def point_satisfies_equation?(point)
       @field.mod(point.y * point.y) == @field.mod(point.x * point.x * point.x + @param_a * point.x + @param_b)
     end
-    
+
     def inspect
       "#<#{self.class}:#{name}>"
     end
-    
+
     def to_s
       inspect
     end
-    
+
     private
     def decode_octet_string(octet_string)
       octet_string = octet_string.dup.force_encoding('BINARY')
@@ -96,7 +96,7 @@ module ECDSA
           # TODO: handle this case, because it will be needed for the P-521 curve
           raise 'Don\'t know how to handle bit lengths that are not a multiple of 8 (1 byte).'
         end
-        
+
         byte_size = bit_length / 8
         expected_size = 1 + 2 * byte_size
         if octet_string.size != expected_size
@@ -111,7 +111,7 @@ module ECDSA
         raise 'Cannot handle octet strings starting with 0x%02x' % first_byte
       end
     end
-    
+
     def compute_bit_length(num)
       bit_length = 0
       while num > 0
@@ -120,13 +120,32 @@ module ECDSA
       end
       bit_length
     end
-  
-    public
-    autoload :Secp256k1, 'ecdsa/group/secp256k1'
-    autoload :Nistp192, 'ecdsa/group/nistp192'
-    autoload :Nistp224, 'ecdsa/group/nistp224'
-    autoload :Nistp256, 'ecdsa/group/nistp256'
-    autoload :Nistp384, 'ecdsa/group/nistp384'
-    autoload :Nistp521, 'ecdsa/group/nistp521'
+
+    GROUP_NAMES = %w{
+      Secp112r1
+      Secp112r2
+      Secp128r1
+      Secp128r2
+      Secp160k1
+      Secp160r1
+      Secp160r2
+      Secp192k1
+      Secp192r1
+      Secp224k1
+      Secp224r1
+      Secp256k1
+      Secp256r1
+      Secp384r1
+      Secp521r1
+      Nistp192
+      Nistp224
+      Nistp256
+      Nistp384
+      Nistp521
+    }
+    
+    GROUP_NAMES.each do |name|
+      autoload name, 'ecdsa/group/' + name.downcase
+    end
   end
 end

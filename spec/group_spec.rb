@@ -30,25 +30,40 @@ describe ECDSA::Group do
       expect(subject.inspect).to eq '#<ECDSA::Group:secp256k1>'
     end
     
-    it 'has a nice #to_s' do
-      expect(subject.to_s).to eq '#<ECDSA::Group:secp256k1>'
+    it 'has a #to_s that is the same as inspect' do
+      expect(subject.to_s).to eq subject.inspect
     end
-    
-    it_behaves_like 'group'
   end
   
-  describe ECDSA::Group::Nistp256 do
-    subject { ECDSA::Group::Nistp256 }
-    it_behaves_like 'group'
-  end
+  groups = [
+    ECDSA::Group::Secp112r1,
+    ECDSA::Group::Secp112r2,
+    ECDSA::Group::Secp128r1,
+    ECDSA::Group::Secp128r2,
+    ECDSA::Group::Secp160k1,
+    ECDSA::Group::Secp160r1,
+    ECDSA::Group::Secp160r2,
+    ECDSA::Group::Secp192k1,
+    ECDSA::Group::Secp192r1,
+    ECDSA::Group::Secp224k1,
+    ECDSA::Group::Secp224r1,
+    ECDSA::Group::Secp256k1,
+    ECDSA::Group::Secp256r1,
+    ECDSA::Group::Secp384r1,
+    ECDSA::Group::Secp521r1,
+    ECDSA::Group::Nistp192,
+    ECDSA::Group::Nistp224,
+    ECDSA::Group::Nistp256,
+    ECDSA::Group::Nistp384,
+    ECDSA::Group::Nistp521,
+  ]
   
-  describe ECDSA::Group::Nistp384 do
-    subject { ECDSA::Group::Nistp384 }
-    it_behaves_like 'group'
-  end
-
-  describe ECDSA::Group::Nistp521 do
-    subject { ECDSA::Group::Nistp521 }
-    it_behaves_like 'group'
+  # TODO: replace above list with strings and make the strings are consistent with group.name
+  
+  groups.each do |group|
+    describe group do
+      subject { group }
+      it_behaves_like 'group'
+    end
   end
 end
