@@ -67,7 +67,7 @@ module ECDSA
     # The number of bits that it takes to represent a member of the field.
     # Log base 2 of the prime p, rounded up.
     def bit_length
-      @bit_length ||= compute_bit_length(@field.prime)
+      @bit_length ||= ECDSA.bit_length(field.prime)
     end
 
     # Verify that the point is a solution to the curve's defining equation.
@@ -112,15 +112,6 @@ module ECDSA
       else
         raise 'Cannot handle octet strings starting with 0x%02x' % first_byte
       end
-    end
-
-    def compute_bit_length(num)
-      bit_length = 0
-      while num > 0
-        bit_length += 1
-        num >>= 1
-      end
-      bit_length
     end
 
     NAMES = %w{

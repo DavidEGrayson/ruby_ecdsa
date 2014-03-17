@@ -20,7 +20,7 @@ end
 
 module ConvertToMatcherContext
   def convert_to(expected)
-    raise 'Need to set @converted first.' if !@converter
-    ConvertToMatcher.new(expected, @converter)
+    raise 'Need to set converter first.' if !converter
+    ConvertToMatcher.new(expected, converter)
   end
 end

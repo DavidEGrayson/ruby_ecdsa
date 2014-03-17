@@ -6,6 +6,24 @@ require_relative 'ecdsa/format'
 
 module ECDSA
 
+  def self.byte_length(integer)
+    length = 0
+    while integer > 0
+      length += 1
+      integer >>= 8
+    end
+    length
+  end
+  
+  def self.bit_length(integer)
+    length = 0
+    while integer > 0
+      length += 1
+      integer >>= 1
+    end
+    length
+  end
+
   def self.convert_digest_to_integer(digest)
     case digest
     when Integer then digest
