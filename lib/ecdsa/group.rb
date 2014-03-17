@@ -121,7 +121,7 @@ module ECDSA
       bit_length
     end
 
-    GROUP_NAMES = %w{
+    NAMES = %w{
       Secp112r1
       Secp112r2
       Secp128r1
@@ -144,7 +144,7 @@ module ECDSA
       Nistp521
     }
     
-    GROUP_NAMES.each do |name|
+    NAMES.each do |name|
       autoload name, 'ecdsa/group/' + name.downcase
     end
   end

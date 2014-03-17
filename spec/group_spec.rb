@@ -9,6 +9,10 @@ shared_examples_for 'group' do
   it 'has maybe the right order' do
     expect(subject.generator.multiply_by_scalar(subject.order)).to eq subject.infinity_point
   end
+  
+  it '#name matches the string used to look it up' do
+    expect(subject.name).to eq name.downcase
+  end
 end
 
 describe ECDSA::Group do
@@ -35,34 +39,11 @@ describe ECDSA::Group do
     end
   end
   
-  groups = [
-    ECDSA::Group::Secp112r1,
-    ECDSA::Group::Secp112r2,
-    ECDSA::Group::Secp128r1,
-    ECDSA::Group::Secp128r2,
-    ECDSA::Group::Secp160k1,
-    ECDSA::Group::Secp160r1,
-    ECDSA::Group::Secp160r2,
-    ECDSA::Group::Secp192k1,
-    ECDSA::Group::Secp192r1,
-    ECDSA::Group::Secp224k1,
-    ECDSA::Group::Secp224r1,
-    ECDSA::Group::Secp256k1,
-    ECDSA::Group::Secp256r1,
-    ECDSA::Group::Secp384r1,
-    ECDSA::Group::Secp521r1,
-    ECDSA::Group::Nistp192,
-    ECDSA::Group::Nistp224,
-    ECDSA::Group::Nistp256,
-    ECDSA::Group::Nistp384,
-    ECDSA::Group::Nistp521,
-  ]
-  
-  # TODO: replace above list with strings and make the strings are consistent with group.name
-  
-  groups.each do |group|
+  ECDSA::Group::NAMES.each do |name|
+    group = ECDSA::Group.const_get(name)
     describe group do
       subject { group }
+      let(:name) { name }
       it_behaves_like 'group'
     end
   end

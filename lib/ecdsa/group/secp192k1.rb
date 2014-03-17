@@ -3,7 +3,7 @@
 module ECDSA
   class Group
     Secp192k1 = new(
-      name: 'sec192k1',
+      name: 'secp192k1',
       p: 0xFFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFF_FFFFFFFE_FFFFEE37,
       a: 0,
       b: 3,
