@@ -1,3 +1,5 @@
+# encoding: US-ASCII
+
 require 'spec_helper'
 
 describe ECDSA do
@@ -36,7 +38,7 @@ describe ECDSA do
     end
     
     let (:public_key) do
-      group.new_point(public_key_octet_string)
+      ECDSA::Format::PointOctetString.decode(public_key_octet_string, group)
     end
     
     it 'can verify the key is on the curve' do

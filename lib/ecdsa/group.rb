@@ -50,9 +50,7 @@ module ECDSA
       when Array
         x, y = p
         Point.new(self, x, y)
-      when String
-        x, y = decode_octet_string p
-        Point.new(self, x, y)
+        # TODO: resolve this inconsistency; Point.new takes two coords but group.new_point takes an array of points
       when Integer
         generator.multiply_by_scalar(p)
       else
@@ -91,31 +89,6 @@ module ECDSA
 
     def to_s
       inspect
-    end
-
-    private
-    def decode_octet_string(octet_string)
-      octet_string = octet_string.dup.force_encoding('BINARY')
-      first_byte = octet_string[0].ord
-      if first_byte == 0x04
-        if bit_length % 8 != 0
-          # TODO: handle this case, because it will be needed for the P-521 curve
-          raise 'Don\'t know how to handle bit lengths that are not a multiple of 8 (1 byte).'
-        end
-
-        byte_size = bit_length / 8
-        expected_size = 1 + 2 * byte_size
-        if octet_string.size != expected_size
-          raise ArgumentError, "Bad string size.  Expected #{expected_size}, got #{octet_string.size}."
-        end
-        x_string = octet_string[1, byte_size]
-        y_string = octet_string[1 + byte_size, byte_size]
-        x = ECDSA.convert_octet_string_to_bit_string(x_string)
-        y = ECDSA.convert_octet_string_to_bit_string(y_string)
-        [x, y]
-      else
-        raise 'Cannot handle octet strings starting with 0x%02x' % first_byte
-      end
     end
 
     NAMES = %w{
