@@ -18,7 +18,7 @@ This gem does not use any randomness; all the algorithms are deterministic.
 In order to sign an ECDSA message, you must generate a secure random number _k_ between 0
 and the order of the group and pass it as an argument to `ECDSA.sign`.
 You should take measures to ensure that you never use the same random number to sign
-two different messages, or else it would be easy for anyone to compute your
+two different messages, or else it would be easy for someone to compute your
 private key from those two signatures.
 
 This gem is hosted at the [DavidEGrayson/ruby_ecdsa github repository](https://github.com/DavidEGrayson/ruby_ecdsa).
