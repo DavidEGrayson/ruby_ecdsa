@@ -44,9 +44,7 @@ module ECDSA
       result = 1
       v = n
       while m > 0
-        if m.odd?
-          result = mod result * v
-        end
+        result = mod result * v if m.odd?
         v = square v
         m >>= 1
       end

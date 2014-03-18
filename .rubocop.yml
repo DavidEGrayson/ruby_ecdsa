@@ -15,3 +15,8 @@ Documentation:
 DoubleNegation:
   Enabled: false
 
+FavorUnlessOverNegatedIf:
+  Enabled: false
+    
+FormatString:
+  EnforcedStyle: percent

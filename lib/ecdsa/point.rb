@@ -51,9 +51,7 @@ module ECDSA
       end
 
       # SEC2, section 2.2.1, rule 5
-      if self == point
-        return double
-      end
+      return double if self == point
 
       raise "Failed to add #{self.inspect} to #{point.inspect}: No addition rules matched."
     end
@@ -74,9 +72,7 @@ module ECDSA
       result = group.infinity_point
       v = self
       while i > 0
-        if i.odd?
-          result = result.add_to_point(v)
-        end
+        result = result.add_to_point(v) if i.odd?
         v = v.double
         i >>= 1
       end
