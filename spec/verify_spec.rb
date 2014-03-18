@@ -6,16 +6,16 @@ describe ECDSA do
   describe 'bitcoin alert message' do
     # The data for this spec came from https://en.bitcoin.it/wiki/Protocol_specification#alert
 
-    let(:group) do
+    let :group do
       ECDSA::Group::Secp256k1
     end
 
-    let(:digest) do
+    let :digest do
       "\xbf\x91\xfb\x0b\x4f\x63\x33\x77\x4a\x02\x2b\xd3\x07\x8e\xd6\xcc" \
       "\xd1\x76\xee\x31\xed\x4f\xb3\xf9\xaf\xce\xb7\x2a\x37\xe7\x87\x86"
     end
 
-    let(:signature_der_string) do
+    let :signature_der_string do
       "\x30\x45" \
       "\x02\x21\x00" \
       "\x83\x89\xdf\x45\xf0\x70\x3f\x39\xec\x8c\x1c\xc4\x2c\x13\x81\x0f" \
@@ -25,11 +25,11 @@ describe ECDSA do
       "\x3f\x57\x30\x60\xd5\xb7\x0c\x3a\x46\x72\x33\x26\xe4\xe8\xa4\xf1"
     end
 
-    let(:signature) do
+    let :signature do
       ECDSA::Format::SignatureDerString.decode(signature_der_string)
     end
 
-    let(:public_key_octet_string) do
+    let :public_key_octet_string do
       "\x04" \
       "\xfc\x97\x02\x84\x78\x40\xaa\xf1\x95\xde\x84\x42\xeb\xec\xed\xf5" \
       "\xb0\x95\xcd\xbb\x9b\xc7\x16\xbd\xa9\x11\x09\x71\xb2\x8a\x49\xe0" \
@@ -37,7 +37,7 @@ describe ECDSA do
       "\x99\x69\x2d\x52\x4e\x9d\x6a\x69\x56\xe7\xc5\xec\xbc\xd6\x82\x84"
     end
 
-    let (:public_key) do
+    let :public_key do
       ECDSA::Format::PointOctetString.decode(public_key_octet_string, group)
     end
 

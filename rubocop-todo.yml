@@ -5,13 +5,9 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 1
-#OpMethod:
-#  Enabled: false
-
 # Offense count: 4
-ParenthesesAsGroupedExpression:
-  Enabled: false
+#ParenthesesAsGroupedExpression:
+#  Enabled: false
 
 # Offense count: 1
 # Cop supports --auto-correct.
