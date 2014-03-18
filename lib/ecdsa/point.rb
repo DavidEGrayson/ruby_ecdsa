@@ -74,7 +74,7 @@ module ECDSA
       result = group.infinity_point
       v = self
       while i > 0
-        if (i % 2) == 1
+        if i.odd?
           result = result.add_to_point(v)
         end
         v = v.double

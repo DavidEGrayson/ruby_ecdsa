@@ -13,7 +13,7 @@ module ECDSA
         return "\x00" if point.infinity?
 
         if opts[:compression]
-          start_byte = (point.y % 2) == 0 ? "\x02" : "\x03"
+          start_byte = point.y.even? ? "\x02" : "\x03"
           start_byte + FieldElementOctetString.encode(point.x, point.group.field)
         else
           "\x04" +
