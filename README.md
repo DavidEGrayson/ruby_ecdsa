@@ -15,7 +15,7 @@ The pre-existing groups can be seen in the `lib/ecdsa/group` folder, and include
 defined in [SEC2](http://www.secg.org/collateral/sec2_final.pdf) and [NIST's Recommended Elliptic Curves for Federal Government Use](http://csrc.nist.gov/groups/ST/toolkit/documents/dss/NISTReCur.pdf).
 
 This gem does not use any randomness; all the algorithms are deterministic.
-In order to sign an ECDSA message, you must generate a secure random number _k_ between 0
+In order to sign a message, you must generate a secure random number _k_ between 0
 and the order of the group and pass it as an argument to `ECDSA.sign`.
 You should take measures to ensure that you never use the same random number to sign
 two different messages, or else it would be easy for someone to compute your
