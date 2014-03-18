@@ -46,7 +46,7 @@ describe ECDSA::Group do
   end
 end
 
-describe "specific groups" do
+describe 'specific groups' do
   describe ECDSA::Group::Secp256k1 do
     subject { ECDSA::Group::Secp256k1 }
 

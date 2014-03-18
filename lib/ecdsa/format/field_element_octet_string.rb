@@ -17,7 +17,7 @@ module ECDSA
 
         if !field.include?(int)
           # The integer has to be non-negative, so it must be too big.
-          raise DecodeError, "Decoded integer is too large for field: 0x%x >= 0x%x." % [int, field.prime]
+          raise DecodeError, 'Decoded integer is too large for field: 0x%x >= 0x%x.' % [int, field.prime]
         end
 
         int

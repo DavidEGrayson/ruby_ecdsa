@@ -61,7 +61,7 @@ module ECDSA
       if (prime % 4) == 3
         square_roots_for_p_3_mod_4(n)
       else
-        raise NotImplementedError, "Square root is only implemented in fields where the prime is equal to 3 mod 4."
+        raise NotImplementedError, 'Square root is only implemented in fields where the prime is equal to 3 mod 4.'
       end
     end
 

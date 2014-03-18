@@ -25,7 +25,7 @@ describe ECDSA::Format::FieldElementOctetString do
 
       it 'raises an error if the integer in the string is too large' do
         expect { described_class.decode("\x1E\xEF", field) }.to raise_error(
-          ECDSA::Format::DecodeError, "Decoded integer is too large for field: 0x1eef >= 0x1eef."
+          ECDSA::Format::DecodeError, 'Decoded integer is too large for field: 0x1eef >= 0x1eef.'
         )
       end
     end
