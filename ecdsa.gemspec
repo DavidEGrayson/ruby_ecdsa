@@ -13,10 +13,9 @@ Gem::Specification.new do |s|
 
   s.authors = ['David Grayson']
   s.email = 'davidegrayson@gmail.com'
-  s.license = ''  # TODO: specify license
+  s.license = 'MIT'
 
   s.required_rubygems_version = Gem::Requirement.new('>= 2')
 
-  s.files = Dir['lib/**/*.rb', 'Gemfile', 'README.md']
-  # TODO: add LICENSE.txt
+  s.files = Dir['lib/**/*.rb', 'Gemfile', 'README.md', 'LICENSE.txt']
 end

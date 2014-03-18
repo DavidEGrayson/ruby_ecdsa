@@ -10,11 +10,11 @@ These classes operate on Ruby integers and do not deal at all with binary format
 Encoding and decoding of binary formats is solely handled by classes under the `ECDSA::Format` module.
 
 You can enter your own curve parameters by instantiating a new `ECDSA::Group` object or you can
-use a pre-existing Group object such as `ECDSA::Group::Secp256k1`.
+use a pre-existing group object such as `ECDSA::Group::Secp256k1`.
 The pre-existing groups can be seen in the `lib/ecdsa/group` folder, and include all the curves
 defined in [SEC2](http://www.secg.org/collateral/sec2_final.pdf) and [NIST's Recommended Elliptic Curves for Federal Government Use](http://csrc.nist.gov/groups/ST/toolkit/documents/dss/NISTReCur.pdf).
 
-This gem is hosted at at the [DavidEGrayson/ruby_ecdsa github repository](https://github.com/DavidEGrayson/ruby_ecdsa).
+This gem is hosted at the [DavidEGrayson/ruby_ecdsa github repository](https://github.com/DavidEGrayson/ruby_ecdsa).
 
 ## Current limitations
 
