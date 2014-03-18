@@ -32,7 +32,7 @@ module ECDSA
 
     # Step 5
     r = group.generator.multiply_by_scalar(u1).add_to_point public_key.multiply_by_scalar(u2)
-    raise InvalidSignatureError, 'R is infinity in step 5.' if r.infinity?
+    raise InvalidSignatureError, 'r is infinity in step 5.' if r.infinity?
 
     # Step 6
     xr = r.x
