@@ -9,7 +9,7 @@ require_relative '../point'
 module ECDSA
   module Format
     module PointOctetString
-      def self.encode(point, opts={})
+      def self.encode(point, opts = {})
         return "\x00" if point.infinity?
 
         if opts[:compression]

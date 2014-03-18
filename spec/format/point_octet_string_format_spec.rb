@@ -54,7 +54,7 @@ describe ECDSA::Format::PointOctetString do
     end
 
     it 'raises an error for the empty string' do
-      expect{ converter.call('') }.to raise_error ECDSA::Format::DecodeError,
+      expect { converter.call('') }.to raise_error ECDSA::Format::DecodeError,
         'Point octet string is empty.'
     end
 

@@ -9,10 +9,10 @@ module ECDSA
       # @param length (Integer) The number of bytes desired in the output string.
       def self.encode(integer, length)
         raise ArgumentError, 'Integer to encode is negative.' if integer < 0
-        raise ArgumentError, 'Integer to encode is too large.' if integer >= (1 << (8*length))
+        raise ArgumentError, 'Integer to encode is too large.' if integer >= (1 << (8 * length))
 
         length.pred.downto(0).map do |i|
-          integer >> (8*i)
+          integer >> (8 * i)
         end.pack('C*')
       end
 

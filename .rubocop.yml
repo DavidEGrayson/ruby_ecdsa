@@ -35,3 +35,11 @@ NumericLiterals:
   Enabled: false
   Exclude:
     - lib/ecdsa/group/nist*.rb
+    
+SignalException:
+  EnforcedStyle: only_raise
+  
+# Very picky about what I name block params to 'reduce'.
+SingleLineBlockParams:
+  Enabled: false
+
