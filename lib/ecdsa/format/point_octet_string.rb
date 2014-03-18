@@ -53,6 +53,7 @@ module ECDSA
 
         possible_ys = group.solve_for_y(x)
         y = possible_ys.find { |py| (py % 2) == y_lsb }
+        raise DecodeError, 'Could not solve for y.' if y.nil?
 
         finish_decode x, y, group
       end

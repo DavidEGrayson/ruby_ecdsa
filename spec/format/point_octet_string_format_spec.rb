@@ -99,7 +99,7 @@ describe ECDSA::Format::PointOctetString do
       expect(converter.call(str)).to eq group.generator
     end
 
-    it 'can decode a compressed point start with 0x03' do
+    it 'can decode a compressed point starting with 0x03' do
       str = "\x03" \
             "\x09\x48\x72\x39\x99\x5A\x5E\xE7\x6B\x55\xF9\xC2\xF0\x98"
 
@@ -113,6 +113,14 @@ describe ECDSA::Format::PointOctetString do
 
       expect { converter.call(str) }.to raise_error ECDSA::Format::DecodeError,
         'Decoded point does not satisfy curve equation: #<ECDSA::Point: secp112r1, 0x8, 0x9>.'
+    end
+
+    it 'raises an error if it cannot solve for Y' do
+      str = "\x03" \
+            "\x09\x48\x72\x39\x99\x5A\x5E\xE7\x6B\x55\xF9\xC2\xF0\x99"
+
+      expect { converter.call(str) }.to raise_error ECDSA::Format::DecodeError,
+        'Could not solve for y.'
     end
 
   end
