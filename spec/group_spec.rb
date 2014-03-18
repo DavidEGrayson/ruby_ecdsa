@@ -5,15 +5,15 @@ shared_examples_for 'group' do
   it 'generator point is on the curve' do
     expect(subject.include?(subject.generator)).to eq true
   end
-    
+
   it 'has maybe the right order' do
     expect(subject.generator.multiply_by_scalar(subject.order)).to eq subject.infinity_point
   end
-  
+
   it '#name matches the string used to look it up' do
     expect(subject.name).to eq name.downcase
   end
-  
+
   # Our current square root algorithm depends on p being 3 mod 4, but
   # the 224-bit curves do not satisfy that condition.
   #it 'uses a prime that is equal to 3 mod 4' do
@@ -23,27 +23,27 @@ end
 
 describe ECDSA::Group do
   subject { ECDSA::Group::Secp256k1 }
-    
+
   it '#inspect is nice' do
     expect(subject.inspect).to eq '#<ECDSA::Group:secp256k1>'
   end
-  
+
   it '#to_s is the same as inspect' do
     expect(subject.to_s).to eq subject.inspect
   end
-  
+
   describe '#infinity_point' do
     it 'returns the infinity point' do
       expect(subject.infinity_point).to be_infinity
     end
   end
-  
+
   describe '#new_point' do
     it 'when given :infinity, returns the infinity point' do
       expect(subject.new_point(:infinity)).to eq subject.infinity_point
     end
   end
-  
+
   describe '#solve_for_y' do
     it 'when given the x of the generator point returns y and -y' do
       g = subject.generator
@@ -55,11 +55,11 @@ end
 describe "specific groups" do
   describe ECDSA::Group::Secp256k1 do
     subject { ECDSA::Group::Secp256k1 }
-  
+
     it 'has a bit length of 256' do
       expect(subject.bit_length).to eq 256
     end
-    
+
     it 'has the right generator point' do
       expect(subject.generator.coords).to eq [
         0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798,
@@ -67,7 +67,7 @@ describe "specific groups" do
       ]
     end
   end
-  
+
   ECDSA::Group::NAMES.each do |name|
     group = ECDSA::Group.const_get(name)
     describe group do

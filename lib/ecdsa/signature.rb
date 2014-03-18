@@ -8,7 +8,7 @@ module ECDSA
       r.is_a?(Integer) or raise ArgumentError, 'r is not an integer.'
       s.is_a?(Integer) or raise ArgumentError, 's is not an integer.'
     end
-    
+
     def components
       [r, s]
     end

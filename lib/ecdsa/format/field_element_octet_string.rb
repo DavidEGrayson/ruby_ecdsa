@@ -11,7 +11,7 @@ module ECDSA
         length = ECDSA.byte_length(field.prime)
         IntegerOctetString.encode(element, length)
       end
-      
+
       def self.decode(string, field)
         int = IntegerOctetString.decode(string)
 
@@ -19,7 +19,7 @@ module ECDSA
           # The integer has to be non-negative, so it must be too big.
           raise DecodeError, "Decoded integer is too large for field: 0x%x >= 0x%x." % [int, field.prime]
         end
-        
+
         int
       end
     end

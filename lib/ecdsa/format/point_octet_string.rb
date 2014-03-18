@@ -49,10 +49,10 @@ module ECDSA
 
         x_string = string[1, group.byte_length]
         x = ECDSA::Format::FieldElementOctetString.decode x_string, group.field
-        
+
         possible_ys = group.solve_for_y(x)
         y = possible_ys.find { |py| (py % 2) == y_lsb }
-        
+
         finish_decode x, y, group
       end
 
@@ -67,7 +67,7 @@ module ECDSA
 
         finish_decode x, y, group
       end
-      
+
       def self.finish_decode(x, y, group)
         point = group.new_point [x, y]
         if !group.include? point

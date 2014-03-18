@@ -62,7 +62,7 @@ module ECDSA
       return self if infinity?
       self.class.new(group, x, field.mod(-y))
     end
-    
+
     def double
       gamma = field.mod((3 * x * x + @group.param_a) * field.inverse(2 * y))
       new_x = field.mod(gamma * gamma - 2 * x)

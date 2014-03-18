@@ -10,7 +10,7 @@ module ECDSA
     attr_reader :order
 
     attr_reader :param_a
-    
+
     attr_reader :param_b
 
     attr_reader :field
@@ -84,11 +84,11 @@ module ECDSA
     def point_satisfies_equation?(point)
       field.mod(point.y * point.y) == equation_right_hand_side(point.x)
     end
-    
+
     def equation_right_hand_side(x)
       field.mod(x * x * x + param_a * x + param_b)
     end
-    
+
     def solve_for_y(x)
       field.square_roots equation_right_hand_side x
     end
@@ -123,7 +123,7 @@ module ECDSA
       Nistp384
       Nistp521
     }
-    
+
     NAMES.each do |name|
       autoload name, 'ecdsa/group/' + name.downcase
     end
