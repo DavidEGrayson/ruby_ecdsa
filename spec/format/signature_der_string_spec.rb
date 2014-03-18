@@ -1,3 +1,5 @@
+# encoding: US-ASCII
+
 require 'spec_helper'
 
 describe ECDSA::Format::SignatureDerString do
@@ -12,19 +14,25 @@ describe ECDSA::Format::SignatureDerString do
     "\x3f\x57\x30\x60\xd5\xb7\x0c\x3a\x46\x72\x33\x26\xe4\xe8\xa4\xf1"
   end
 
+  let(:r) { 0x8389df45f0703f39ec8c1cc42c13810ffcae14995bb648340219e353b63b53eb }
+  let(:s) { 0x9ec65e1c1aaeec1fd334c6b684bde2b3f573060d5b70c3a46723326e4e8a4f1 }
+
   describe '#decode' do
     let(:signature) { described_class.decode(signature_der) }
 
     it 'retrieves the right r value' do
-      expect(signature.r).to eq 0x8389df45f0703f39ec8c1cc42c13810ffcae14995bb648340219e353b63b53eb
+      expect(signature.r).to eq r
     end
-    
+
     it 'retrieves the right s value' do
-      expect(signature.s).to eq 0x9ec65e1c1aaeec1fd334c6b684bde2b3f573060d5b70c3a46723326e4e8a4f1
+      expect(signature.s).to eq s
     end
   end
-  
+
   describe '#encode' do
-    pending
+    it 'can encode' do
+      str = described_class.encode(ECDSA::Signature.new(r, s))
+      expect(str).to eq signature_der
+    end
   end
 end
