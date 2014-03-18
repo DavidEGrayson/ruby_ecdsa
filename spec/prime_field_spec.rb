@@ -77,5 +77,31 @@ describe ECDSA::PrimeField do
       end
     end
   end
+  
+  describe '#power' do
+    it 'returns 1 when raising to the power 0' do
+      expect(field.power(5, 0)).to eq 1
+    end
+    
+    it 'returns 1 when raising 0 to the power 0' do
+      expect(field.power(0, 0)).to eq 1
+    end
+  end
+  
+  describe '#square' do
+    it 'returns 0 for 0' do
+      expect(field.square(0)).to eq 0
+    end
+
+    it 'returns 1 for 1' do
+      expect(field.square(1)).to eq 1
+    end
+
+    it 'returns 402 for 1311' do
+      expect(field.square(1311)).to eq 402
+    end
+    
+    
+  end
 
 end
