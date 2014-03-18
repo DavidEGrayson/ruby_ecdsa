@@ -7,18 +7,6 @@
 
 # Offense count: 1
 # Cop supports --auto-correct.
-# Configuration parameters: PreferredDelimiters.
-#PercentLiteralDelimiters:
-#  Enabled: false
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleReturnValues.
-RedundantReturn:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
 RedundantSelf:
   Enabled: false
 

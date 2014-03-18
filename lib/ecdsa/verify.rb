@@ -43,6 +43,6 @@ module ECDSA
     # Step 8
     raise InvalidSignatureError, 'v does not equal r.' if v != signature.r
 
-    return true
+    true
   end
 end

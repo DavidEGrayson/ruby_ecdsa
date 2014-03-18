@@ -75,7 +75,7 @@ module ECDSA
       candidate = power n, (prime + 1) / 4
       return [] if square(candidate) != n
       return [candidate] if candidate.zero?
-      return [candidate, mod(-candidate)].sort
+      [candidate, mod(-candidate)].sort
     end
   end
 end
