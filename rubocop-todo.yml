@@ -6,15 +6,6 @@
 # versions of RuboCop, may require this file to be generated again.
 
 # Offense count: 3
-# Configuration parameters: MaxLineLength.
-#IfUnlessModifier:
-#  Enabled: false
-
-# Offense count: 2
-Lambda:
-  Enabled: false
-
-# Offense count: 3
 # Cop supports --auto-correct.
 LeadingCommentSpace:
   Enabled: false

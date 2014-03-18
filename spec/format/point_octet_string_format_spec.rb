@@ -24,7 +24,7 @@ describe ECDSA::Format::PointOctetString do
 
       context 'with point compression' do
         let(:converter) do
-          lambda { |p| ECDSA::Format::PointOctetString.encode(p, compression: true) }
+          ->(p) { ECDSA::Format::PointOctetString.encode(p, compression: true) }
         end
 
         context 'with an even Y' do
@@ -50,7 +50,7 @@ describe ECDSA::Format::PointOctetString do
 
   describe '#decode' do
     let(:converter) do
-      lambda { |p| ECDSA::Format::PointOctetString.decode(p, group) }
+      ->(p) { ECDSA::Format::PointOctetString.decode(p, group) }
     end
 
     it 'raises an error for the empty string' do
