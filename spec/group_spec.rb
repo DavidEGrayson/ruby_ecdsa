@@ -13,12 +13,6 @@ shared_examples_for 'group' do
   it '#name matches the string used to look it up' do
     expect(subject.name).to eq name.downcase
   end
-
-  # Our current square root algorithm depends on p being 3 mod 4, but
-  # the 224-bit curves do not satisfy that condition.
-  #it 'uses a prime that is equal to 3 mod 4' do
-  #  expect(subject.field.prime % 4).to eq 3
-  #end
 end
 
 describe ECDSA::Group do
