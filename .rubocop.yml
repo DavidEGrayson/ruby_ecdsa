@@ -1,6 +1,6 @@
 AlignParameters:
   Enabled: false
-  
+
 AndOr:
   Enabled: false
 
@@ -9,13 +9,10 @@ CyclomaticComplexity:
 
 Documentation:
   Enabled: false
-  
-DoubleNegation:
-  Enabled: false
 
 FavorUnlessOverNegatedIf:
   Enabled: false
-    
+
 FormatString:
   EnforcedStyle: percent
 
@@ -27,16 +24,16 @@ LineLength:
 
 MethodLength:
   Max: 20
-  
+
 # Buggy cop: it was auto-correcting files that were excluded when I ran rubcop -a
 NumericLiterals:
   Enabled: false
   Exclude:
     - lib/ecdsa/group/nist*.rb
-    
+
 SignalException:
   EnforcedStyle: only_raise
-  
+
 # Very picky about what I name block params to 'reduce'.
 SingleLineBlockParams:
   Enabled: false
