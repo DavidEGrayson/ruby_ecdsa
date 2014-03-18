@@ -1,3 +1,5 @@
+Good resources for learning about ECDSA:
+
 http://www.secg.org/collateral/sec1_final.pdf
 http://www.secg.org/collateral/sec2_final.pdf
 http://csrc.nist.gov/groups/ST/toolkit/documents/dss/NISTReCur.pdf
@@ -12,4 +14,3 @@ Further resources for handling compressed coordinates:
     https://github.com/openssl/openssl/blob/a898936218bc279b5d7cdf76d58a25e7a2d419cb/crypto/bn/bn_sqrt.c#L62
   secp256k1_fe_sqrt in bitcoin's secp256k1 library:
     https://github.com/bitcoin/secp256k1/blob/8b3263b638b19a1e39509dcb04bbfc2e9048a7a2/src/field_impl.h#L65
-
