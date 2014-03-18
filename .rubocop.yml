@@ -5,3 +5,13 @@ AlignParameters:
   
 AndOr:
   Enabled: false
+
+CyclomaticComplexity:
+  Max: 18
+
+Documentation:
+  Enabled: false
+  
+DoubleNegation:
+  Enabled: false
+

@@ -93,7 +93,7 @@ module ECDSA
     end
 
     def infinity?
-      !!@infinity
+      @infinity == true
     end
 
     def inspect
