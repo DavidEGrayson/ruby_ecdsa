@@ -38,3 +38,9 @@ This gem is hosted at the [DavidEGrayson/ruby_ecdsa github repository](https://g
 This gem was not written by a cryptography expert and has not been carefully checked.
 It is provided "as is" and it is the user's responsibility to make sure it will be
 suitable for the desired purpose.
+
+## Installation
+
+This library is destributed as a gem named [ecdsa](https://rubygems.org/gems/ecdsa) at RubyGems.org.  To install it, run:
+
+    gem install ecdsa
