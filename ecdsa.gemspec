@@ -1,10 +1,11 @@
 # This file was written by hand.
 
-require_relative 'lib/ecdsa/version'
+$LOAD_PATH << 'lib'
+require 'ecdsa/version'
 
 Gem::Specification.new do |s|
   s.name = 'ecdsa'
-  s.version  = RPicSim::VERSION
+  s.version  = ECDSA::VERSION
   s.date = Time.now.strftime('%Y-%m-%d')
 
   # The summary should be the same as the description at https://github.com/DavidEGrayson/ruby_ecdsa
