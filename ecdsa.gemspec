@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
 
   # The summary should be the same as the description at https://github.com/DavidEGrayson/ruby_ecdsa
   s.summary = 'This gem implements the Ellipctic Curve Digital Signature Algorithm (ECDSA) almost entirely in pure Ruby.'
-  s.homepage = 'https://github.com/pololu/rpicsim'
+  s.homepage = 'https://github.com/DavidEGrayson/ruby_ecdsa'
 
   s.authors = ['David Grayson']
   s.email = 'davidegrayson@gmail.com'
