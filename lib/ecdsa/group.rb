@@ -101,7 +101,7 @@ module ECDSA
       inspect
     end
 
-    NAMES = %w{
+    NAMES = %w(
       Secp112r1
       Secp112r2
       Secp128r1
@@ -122,7 +122,7 @@ module ECDSA
       Nistp256
       Nistp384
       Nistp521
-    }
+    )
 
     NAMES.each do |name|
       autoload name, 'ecdsa/group/' + name.downcase
