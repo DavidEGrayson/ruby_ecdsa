@@ -150,11 +150,6 @@ SpaceInsideBlockBraces:
 StringLiterals:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-TrailingBlankLines:
-  Enabled: false
-
 # Offense count: 27
 # Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
 TrailingComma:

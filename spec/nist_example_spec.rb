@@ -175,5 +175,3 @@ describe 'NIST P-521 examples' do
 
   it_behaves_like 'NIST example'
 end
-
-

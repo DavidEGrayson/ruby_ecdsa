@@ -58,4 +58,3 @@ describe ECDSA do
 
   end
 end
-
