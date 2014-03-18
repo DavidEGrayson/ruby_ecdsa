@@ -31,9 +31,9 @@ module ECDSA
     def add_to_point(point)
       check_group! point
 
-      # TODO: remove these assertions
-      raise "point given (#{point.inspect}) does not belong to #{group.name}" if !group.include?(point)
-      raise "point (#{inspect}) does not belong to #{group.name}" if !group.include?(self)
+      # Assertions:
+      # raise "point given (#{point.inspect}) does not belong to #{group.name}" if !group.include?(point)
+      # raise "point (#{inspect}) does not belong to #{group.name}" if !group.include?(self)
 
       # SEC1, section 2.2.1, rules 1 and 2
       return point if infinity?

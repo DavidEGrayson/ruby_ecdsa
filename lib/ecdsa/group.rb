@@ -41,10 +41,6 @@ module ECDSA
       @param_b = field.mod @param_b
     end
 
-    # TODO: allow generating points from:
-    #  compressed octet strings
-    #  [x, y]  (public key numbers)
-    #  a       (private key number)
     def new_point(p)
       case p
       when :infinity
@@ -52,7 +48,6 @@ module ECDSA
       when Array
         x, y = p
         Point.new(self, x, y)
-        # TODO: resolve this inconsistency; Point.new takes two coords but group.new_point takes an array of points
       when Integer
         generator.multiply_by_scalar(p)
       else

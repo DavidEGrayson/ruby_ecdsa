@@ -9,9 +9,6 @@ shared_examples_for 'NIST example' do
     expect(point).to eq public_key
   end
 
-  # TODO: figure out how the private key generation with K works in ECDSA_Prime.pdf
-  # All I know is that k is one more than c but I don't know how to get a point from K.
-
   specify 'signature generation' do
     signature = ECDSA.sign(group, d, e, k)
     expect(signature).to eq signature
