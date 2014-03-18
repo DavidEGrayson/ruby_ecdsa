@@ -20,3 +20,10 @@ FavorUnlessOverNegatedIf:
     
 FormatString:
   EnforcedStyle: percent
+
+LineLength:
+  Max: 120
+  Exclude:
+    - lib/ecdsa/group/*.rb
+    - spec/nist_example_spec.rb
+

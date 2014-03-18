@@ -12,7 +12,9 @@ describe ECDSA::Format::FieldElementOctetString do
       end
 
       it 'raises an error if you give it something not in the field' do
-        expect{ described_class.encode(0x1EEF, field) }.to raise_error ArgumentError, 'Given element is not an element of the field.'
+        expect{ described_class.encode(0x1EEF, field) }.to raise_error(
+          ArgumentError, 'Given element is not an element of the field.'
+        )
       end
     end
 
@@ -22,8 +24,9 @@ describe ECDSA::Format::FieldElementOctetString do
       end
 
       it 'raises an error if the integer in the string is too large' do
-        expect{ described_class.decode("\x1E\xEF", field) }.to raise_error ECDSA::Format::DecodeError,
-          "Decoded integer is too large for field: 0x1eef >= 0x1eef."
+        expect{ described_class.decode("\x1E\xEF", field) }.to raise_error(
+          ECDSA::Format::DecodeError, "Decoded integer is too large for field: 0x1eef >= 0x1eef."
+        )
       end
     end
   end
