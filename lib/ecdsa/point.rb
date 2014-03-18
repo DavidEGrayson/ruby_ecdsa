@@ -79,13 +79,13 @@ module ECDSA
       result
     end
 
-    def eql?(point)
-      return false if !point.is_a?(Point) || point.group != group
-      x == point.x && y == point.y
+    def eql?(other)
+      return false if !other.is_a?(Point) || other.group != group
+      x == other.x && y == other.y
     end
 
-    def ==(point)
-      eql?(point)
+    def ==(other)
+      eql?(other)
     end
 
     def infinity?

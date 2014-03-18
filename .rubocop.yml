@@ -7,7 +7,7 @@ AndOr:
   Enabled: false
 
 CyclomaticComplexity:
-  Max: 18
+  Max: 20
 
 Documentation:
   Enabled: false
@@ -27,3 +27,9 @@ LineLength:
     - lib/ecdsa/group/*.rb
     - spec/nist_example_spec.rb
 
+MethodLength:
+  Max: 20
+  
+NumericLiterals:
+  Exclude:
+    - lib/ecdsa/group/nist*.rb

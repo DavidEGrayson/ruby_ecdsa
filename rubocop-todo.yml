@@ -5,20 +5,9 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 6
-# Configuration parameters: CountComments.
-MethodLength:
-  Max: 17
-
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: MinDigits.
-NumericLiterals:
-  Enabled: false
-
 # Offense count: 1
-OpMethod:
-  Enabled: false
+#OpMethod:
+#  Enabled: false
 
 # Offense count: 4
 ParenthesesAsGroupedExpression:
