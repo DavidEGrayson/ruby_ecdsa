@@ -53,7 +53,7 @@ module ECDSA
       # SEC2, section 2.2.1, rule 5
       return double if self == point
 
-      raise "Failed to add #{self.inspect} to #{point.inspect}: No addition rules matched."
+      raise "Failed to add #{inspect} to #{point.inspect}: No addition rules matched."
     end
 
     def negate
