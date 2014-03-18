@@ -22,6 +22,8 @@ module ECDSA
         end
       end
 
+      # This is equivalent to ec_GFp_simple_oct2point in OpenSSL:
+      # https://github.com/openssl/openssl/blob/a898936218bc279b5d7cdf76d58a25e7a2d419cb/crypto/ec/ecp_oct.c
       def self.decode(string, group)
         raise DecodeError, 'Point octet string is empty.' if string.empty?
 
@@ -44,22 +46,23 @@ module ECDSA
       def self.decode_compressed(string, group, y_lsb)
         expected_length = 1 + group.byte_length
         check_length string, expected_length
+
       end
-      
+
       def self.decode_uncompressed(string, group)
         expected_length = 1 + 2 * group.byte_length
         check_length string, expected_length
-        
+
         x_string = string[1, group.byte_length]
         y_string = string[1 + group.byte_length, group.byte_length]
         x = ECDSA::Format::FieldElementOctetString.decode x_string, group.field
         y = ECDSA::Format::FieldElementOctetString.decode y_string, group.field
-        
+
         point = group.new_point [x, y]
         if !group.include? point
           raise DecodeError, "Decoded point does not satisfy curve equation: #{point.inspect}."
         end
-        
+
         point
       end
 

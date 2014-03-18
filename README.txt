@@ -3,3 +3,13 @@ http://www.secg.org/collateral/sec2_final.pdf
 http://csrc.nist.gov/groups/ST/toolkit/documents/dss/NISTReCur.pdf
 http://csrc.nist.gov/groups/ST/toolkit/documents/Examples/ECDSA_Prime.pdf
 http://csrc.nist.gov/publications/fips/fips186-3/fips_186-3.pdf
+http://math.stanford.edu/~jbooher/expos/sqr_qnr.pdf
+
+Further resources for handling compressed coordinates:
+  ec_GFp_simple_set_compressed_coordinates in OpenSSL
+    https://github.com/openssl/openssl/blob/a898936218bc279b5d7cdf76d58a25e7a2d419cb/crypto/ec/ecp_oct.c#L70
+ BN_mod_sqrt in OpenSSL:
+    https://github.com/openssl/openssl/blob/a898936218bc279b5d7cdf76d58a25e7a2d419cb/crypto/bn/bn_sqrt.c#L62
+  secp256k1_fe_sqrt in bitcoin's secp256k1 library:
+    https://github.com/bitcoin/secp256k1/blob/8b3263b638b19a1e39509dcb04bbfc2e9048a7a2/src/field_impl.h#L65
+

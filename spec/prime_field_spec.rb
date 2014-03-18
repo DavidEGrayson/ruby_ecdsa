@@ -58,4 +58,24 @@ describe ECDSA::PrimeField do
     end
   end
 
+  describe '#square_roots' do
+    context 'if the prime is equivalent to 3 mod 4' do
+      it 'can calculate the square root of 0' do
+        expect(field.square_roots(0)).to eq [0]
+      end
+
+      it 'can calculate the square root of 1' do
+        expect(field.square_roots(1)).to eq [1, 1366]
+      end
+
+      it 'can calculate the square root of 1311 or 56 mod 1367' do
+        expect(field.square_roots(402)).to eq [56, 1311]
+      end
+
+      it 'reports that prime-1 has no square roots' do
+        expect(field.square_roots(1366)).to eq []
+      end
+    end
+  end
+
 end
