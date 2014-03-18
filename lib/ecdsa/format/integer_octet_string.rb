@@ -11,7 +11,7 @@ module ECDSA
         raise ArgumentError, 'Integer to encode is negative.' if integer < 0
         raise ArgumentError, 'Integer to encode is too large.' if integer >= (1 << (8*length))
 
-        length.pred.downto(0).collect do |i|
+        length.pred.downto(0).map do |i|
           integer >> (8*i)
         end.pack('C*')
       end

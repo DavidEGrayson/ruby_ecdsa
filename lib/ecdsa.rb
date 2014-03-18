@@ -48,12 +48,12 @@ module ECDSA
   # SEC1, Section 2.3.2.
   # My interpretation of that section is that we treat the octet string as BIG endian.
   def self.convert_octet_string_to_bit_string(string)
-    string.bytes.inject { |n, b| (n << 8) + b }
+    string.bytes.reduce { |n, b| (n << 8) + b }
   end
 end
 
 class String
   def hex_inspect
-    '"' + each_byte.collect { |b| '\x%02x' % b}.join + '"'
+    '"' + each_byte.map { |b| '\x%02x' % b}.join + '"'
   end
 end

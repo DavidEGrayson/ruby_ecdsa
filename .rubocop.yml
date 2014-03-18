@@ -1,1 +1,7 @@
 inherit_from: rubocop-todo.yml
+
+AlignParameters:
+  Enabled: false
+  
+AndOr:
+  Enabled: false
