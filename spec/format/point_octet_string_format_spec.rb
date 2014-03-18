@@ -92,12 +92,18 @@ describe ECDSA::Format::PointOctetString do
       expect(converter.call(str)).to eq group.generator
     end
     
-    pending 'can decode a compressed point starting with 0x02' do
-    
+    it 'can decode a compressed point starting with 0x02' do
+      str = "\x02" \
+            "\x09\x48\x72\x39\x99\x5A\x5E\xE7\x6B\x55\xF9\xC2\xF0\x98"
+      
+      expect(converter.call(str)).to eq group.generator
     end
     
-    pending 'can decode a compressed point start with 0x03' do
-    
+    it 'can decode a compressed point start with 0x03' do
+      str = "\x03" \
+            "\x09\x48\x72\x39\x99\x5A\x5E\xE7\x6B\x55\xF9\xC2\xF0\x98"
+      
+      expect(converter.call(str)).to eq group.generator.negate
     end
     
     it 'raises an error if the point is not actually on the curve' do

@@ -17,7 +17,7 @@ module ECDSA
       else
         x, y = args
         raise ArgumentError, "Invalid x: #{x.inspect}" if !x.is_a? Integer
-        raise ArgumentError, "Invalid x: #{y.inspect}" if !y.is_a? Integer
+        raise ArgumentError, "Invalid y: #{y.inspect}" if !y.is_a? Integer
 
         @x = x
         @y = y
@@ -58,6 +58,11 @@ module ECDSA
       raise "Failed to add #{self.inspect} to #{point.inspect}: No addition rules matched."
     end
 
+    def negate
+      return self if infinity?
+      self.class.new(group, x, field.mod(-y))
+    end
+    
     def double
       gamma = field.mod((3 * x * x + @group.param_a) * field.inverse(2 * y))
       new_x = field.mod(gamma * gamma - 2 * x)

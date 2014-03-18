@@ -47,6 +47,13 @@ module ECDSA
         expected_length = 1 + group.byte_length
         check_length string, expected_length
 
+        x_string = string[1, group.byte_length]
+        x = ECDSA::Format::FieldElementOctetString.decode x_string, group.field
+        
+        possible_ys = group.solve_for_y(x)
+        y = possible_ys.find { |py| (py % 2) == y_lsb }
+        
+        finish_decode x, y, group
       end
 
       def self.decode_uncompressed(string, group)
@@ -58,11 +65,14 @@ module ECDSA
         x = ECDSA::Format::FieldElementOctetString.decode x_string, group.field
         y = ECDSA::Format::FieldElementOctetString.decode y_string, group.field
 
+        finish_decode x, y, group
+      end
+      
+      def self.finish_decode(x, y, group)
         point = group.new_point [x, y]
         if !group.include? point
           raise DecodeError, "Decoded point does not satisfy curve equation: #{point.inspect}."
         end
-
         point
       end
 

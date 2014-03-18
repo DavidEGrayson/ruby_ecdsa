@@ -43,6 +43,13 @@ describe ECDSA::Group do
       expect(subject.new_point(:infinity)).to eq subject.infinity_point
     end
   end
+  
+  describe '#solve_for_y' do
+    it 'when given the x of the generator point returns y and -y' do
+      g = subject.generator
+      expect(subject.solve_for_y(g.x)).to eq [g.y, subject.field.mod(-g.y)].sort
+    end
+  end
 end
 
 describe "specific groups" do

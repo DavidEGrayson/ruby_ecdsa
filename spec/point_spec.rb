@@ -30,6 +30,22 @@ describe ECDSA::Point do
     end
   end
   
+  describe 'negate' do
+    context 'for infinity' do
+      it 'returns infinity' do
+        expect(group.infinity_point.negate).to eq group.infinity_point
+      end
+    end
+    
+    context 'for non-infinity' do
+      it 'returns a point with same x coordinate but negated y coordinate' do
+        n = group.generator.negate
+        expect(n.x).to eq group.generator.x
+        expect(n.y).to eq group.field.mod(-group.generator.y)
+      end
+    end
+  end
+  
   describe 'double' do
     it 'can double the generator of secp256k1' do
       point = group.generator.double
