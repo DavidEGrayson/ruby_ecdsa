@@ -32,6 +32,6 @@ module ECDSA
       return nil
     end
     
-    Signature.new [r, s]
+    Signature.new r, s
   end
 end

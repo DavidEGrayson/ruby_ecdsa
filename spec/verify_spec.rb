@@ -26,7 +26,7 @@ describe ECDSA do
     end
     
     let(:signature) do
-      ECDSA::Signature.new(signature_der_string)
+      ECDSA::Format::SignatureDerString.decode(signature_der_string)
     end
 
     let(:public_key_octet_string) do
