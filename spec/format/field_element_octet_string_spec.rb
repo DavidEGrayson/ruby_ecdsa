@@ -1,4 +1,4 @@
-# encoding: US-ASCII
+# encoding: ASCII-8BIT
 
 require 'spec_helper'
 

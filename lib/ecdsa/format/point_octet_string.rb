@@ -1,4 +1,4 @@
-# encoding: US-ASCII
+# encoding: ASCII-8BIT
 
 # The point octet string format is defined in http://www.secg.org/collateral/sec1_final.pdf .
 # Section 2.3.3: EllipticCurvePoint-to-OctetString Conversion
