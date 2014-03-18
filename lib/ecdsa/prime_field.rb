@@ -68,6 +68,7 @@ module ECDSA
     end
 
     private
+
     # This is Algorithm 1 from http://math.stanford.edu/~jbooher/expos/sqr_qnr.pdf
     # The algorithm assumes that its input actually does have a square root.
     # To get around that, we double check the answer after running the algorithm to make

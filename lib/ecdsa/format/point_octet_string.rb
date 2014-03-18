@@ -43,6 +43,7 @@ module ECDSA
       end
 
       private
+
       def self.decode_compressed(string, group, y_lsb)
         expected_length = 1 + group.byte_length
         check_length string, expected_length

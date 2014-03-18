@@ -5,7 +5,6 @@ require_relative 'ecdsa/sign'
 require_relative 'ecdsa/format'
 
 module ECDSA
-
   def self.byte_length(integer)
     length = 0
     while integer > 0

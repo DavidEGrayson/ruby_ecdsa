@@ -6,15 +6,6 @@
 # versions of RuboCop, may require this file to be generated again.
 
 # Offense count: 3
-EmptyLinesAroundAccessModifier:
-  Enabled: false
-
-# Offense count: 2
-# Cop supports --auto-correct.
-EmptyLinesAroundBody:
-  Enabled: false
-
-# Offense count: 3
 EvenOdd:
   Enabled: false
 

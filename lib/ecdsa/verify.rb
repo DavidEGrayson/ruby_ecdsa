@@ -1,5 +1,4 @@
 module ECDSA
-
   class InvalidSignatureError < StandardError
   end
 

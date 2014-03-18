@@ -105,6 +105,7 @@ module ECDSA
     end
 
     private
+
     def check_group!(point)
       raise 'Mismatched groups.' if point.group != group
     end
