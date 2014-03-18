@@ -1,5 +1,3 @@
-inherit_from: rubocop-todo.yml
-
 AlignParameters:
   Enabled: false
   
@@ -43,3 +41,6 @@ SignalException:
 SingleLineBlockParams:
   Enabled: false
 
+TrailingComma:
+  EnforcedStyleForMultiline: comma
+  Enabled: false
