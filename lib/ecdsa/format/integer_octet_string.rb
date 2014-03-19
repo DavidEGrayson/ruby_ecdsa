@@ -17,11 +17,7 @@ module ECDSA
       end
 
       def self.decode(string)
-        integer = 0
-        string.each_byte do |b|
-          integer = (integer << 8) + b.ord
-        end
-        integer
+        string.bytes.reduce { |n, b| (n << 8) + b }
       end
     end
   end
