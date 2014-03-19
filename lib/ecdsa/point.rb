@@ -62,6 +62,7 @@ module ECDSA
     end
 
     def double
+      return self if infinity?
       gamma = field.mod((3 * x * x + @group.param_a) * field.inverse(2 * y))
       new_x = field.mod(gamma * gamma - 2 * x)
       new_y = field.mod(gamma * (x - new_x) - y)
@@ -69,8 +70,8 @@ module ECDSA
     end
 
     def multiply_by_scalar(i)
-      raise ArgumentError, 'Scaler should be an integer.' if !i.is_a?(Integer)
-      raise ArgumentError, 'Scalar should not be negative.' if i < 0
+      raise ArgumentError, 'Scalar is not an integer.' if !i.is_a?(Integer)
+      raise ArgumentError, 'Scalar is negative.' if i < 0
       result = group.infinity_point
       v = self
       while i > 0

@@ -5,13 +5,43 @@ describe ECDSA::Point do
     ECDSA::Group::Secp256k1
   end
 
-  describe 'multiplty_by_scalar' do
+  describe 'multiply_by_scalar' do
     it 'does not give infinity when we multiply the generator of secp256k1 by a number less than the order' do
       # this test was added to fix a particular bug
       k = 2
       expect(k).to be < group.order
       point = group.generator.multiply_by_scalar(k)
       expect(point).to_not be_infinity
+    end
+    
+    it 'complains if the argument is not an integer' do
+      expect { group.generator.multiply_by_scalar(1.1) }.to raise_error ArgumentError, 'Scalar is not an integer.'
+    end
+    
+    it 'complains if the argument is negative' do
+      expect { group.generator.multiply_by_scalar(-3) }.to raise_error ArgumentError, 'Scalar is negative.'    
+    end
+  end
+  
+  describe '#coords' do
+    it 'returns [nil, nil] for infinity' do
+      expect(group.infinity_point.coords).to eq [nil, nil]
+    end
+    
+    it 'returns x and y' do
+      expect(group.generator.coords).to eq [
+          0x79BE667E_F9DCBBAC_55A06295_CE870B07_029BFCDB_2DCE28D9_59F2815B_16F81798,
+          0x483ADA77_26A3C465_5DA4FBFC_0E1108A8_FD17B448_A6855419_9C47D08F_FB10D4B8]
+    end
+  end
+  
+  describe '#double' do
+    it 'returns infinity for infinity' do
+      expect(group.infinity_point.double).to eq group.infinity_point
+    end
+    
+    it 'can double the generator' do
+      expect(group.generator.double).to_not be_infinity
     end
   end
 
@@ -30,18 +60,14 @@ describe ECDSA::Point do
   end
 
   describe 'negate' do
-    context 'for infinity' do
-      it 'returns infinity' do
-        expect(group.infinity_point.negate).to eq group.infinity_point
-      end
+    it 'returns infinity for infinity' do
+      expect(group.infinity_point.negate).to eq group.infinity_point
     end
 
-    context 'for non-infinity' do
-      it 'returns a point with same x coordinate but negated y coordinate' do
-        n = group.generator.negate
-        expect(n.x).to eq group.generator.x
-        expect(n.y).to eq group.field.mod(-group.generator.y)
-      end
+    it 'returns a point with same x coordinate but negated y coordinate' do
+      n = group.generator.negate
+      expect(n.x).to eq group.generator.x
+      expect(n.y).to eq group.field.mod(-group.generator.y)
     end
   end
 
