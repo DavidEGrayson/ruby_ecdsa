@@ -1,6 +1,11 @@
 # Defined in http://www.secg.org/collateral/sec1_final.pdf :
 # Section 2.3.7: Integer-to-OctetString Conversion
 # Section 2.3.8: OctetString-to-Integer Conversion
+#
+# We use integers to represent bit strings, so this module can
+# also be thought of as implementing these sections:
+# Section 2.3.1: BitString-to-OctetString Conversion
+# Section 2.3.2: OctetString-to-BitString Conversion
 
 module ECDSA
   module Format
