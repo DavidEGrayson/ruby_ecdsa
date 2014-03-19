@@ -13,33 +13,33 @@ describe ECDSA::Point do
       point = group.generator.multiply_by_scalar(k)
       expect(point).to_not be_infinity
     end
-    
+
     it 'complains if the argument is not an integer' do
       expect { group.generator.multiply_by_scalar(1.1) }.to raise_error ArgumentError, 'Scalar is not an integer.'
     end
-    
+
     it 'complains if the argument is negative' do
-      expect { group.generator.multiply_by_scalar(-3) }.to raise_error ArgumentError, 'Scalar is negative.'    
+      expect { group.generator.multiply_by_scalar(-3) }.to raise_error ArgumentError, 'Scalar is negative.'
     end
   end
-  
+
   describe '#coords' do
     it 'returns [nil, nil] for infinity' do
-      expect(group.infinity_point.coords).to eq [nil, nil]
+      expect(group.infinity.coords).to eq [nil, nil]
     end
-    
+
     it 'returns x and y' do
       expect(group.generator.coords).to eq [
-          0x79BE667E_F9DCBBAC_55A06295_CE870B07_029BFCDB_2DCE28D9_59F2815B_16F81798,
-          0x483ADA77_26A3C465_5DA4FBFC_0E1108A8_FD17B448_A6855419_9C47D08F_FB10D4B8]
+        0x79BE667E_F9DCBBAC_55A06295_CE870B07_029BFCDB_2DCE28D9_59F2815B_16F81798,
+        0x483ADA77_26A3C465_5DA4FBFC_0E1108A8_FD17B448_A6855419_9C47D08F_FB10D4B8]
     end
   end
-  
+
   describe '#double' do
     it 'returns infinity for infinity' do
-      expect(group.infinity_point.double).to eq group.infinity_point
+      expect(group.infinity.double).to eq group.infinity
     end
-    
+
     it 'can double the generator' do
       expect(group.generator.double).to_not be_infinity
     end
@@ -48,20 +48,20 @@ describe ECDSA::Point do
   describe 'add_to_point' do
     context 'when adding point + infinity' do
       it 'returns the point' do
-        expect(group.generator.add_to_point(group.infinity_point)).to eq group.generator
+        expect(group.generator.add_to_point(group.infinity)).to eq group.generator
       end
     end
 
     context 'when adding infinity + point' do
       it 'returns the point' do
-        expect(group.infinity_point.add_to_point(group.generator)).to eq group.generator
+        expect(group.infinity.add_to_point(group.generator)).to eq group.generator
       end
     end
   end
 
   describe 'negate' do
     it 'returns infinity for infinity' do
-      expect(group.infinity_point.negate).to eq group.infinity_point
+      expect(group.infinity.negate).to eq group.infinity
     end
 
     it 'returns a point with same x coordinate but negated y coordinate' do
@@ -86,7 +86,7 @@ describe ECDSA::Point do
     end
 
     it 'shows infinity if the point is infinity' do
-      expect(group.infinity_point.inspect).to eq '#<ECDSA::Point: secp256k1, infinity>'
+      expect(group.infinity.inspect).to eq '#<ECDSA::Point: secp256k1, infinity>'
     end
   end
 end

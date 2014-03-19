@@ -7,7 +7,7 @@ shared_examples_for 'group' do
   end
 
   it 'has maybe the right order' do
-    expect(subject.generator.multiply_by_scalar(subject.order)).to eq subject.infinity_point
+    expect(subject.generator.multiply_by_scalar(subject.order)).to eq subject.infinity
   end
 
   it '#name matches the string used to look it up' do
@@ -26,15 +26,19 @@ describe ECDSA::Group do
     expect(subject.to_s).to eq subject.inspect
   end
 
-  describe '#infinity_point' do
+  describe '#infinity' do
     it 'returns the infinity point' do
-      expect(subject.infinity_point).to be_infinity
+      expect(subject.infinity).to be_infinity
+    end
+
+    it 'has an alias #infinity_point for backwards compatibility' do
+      expect(subject.method(:infinity_point)).to eq subject.method(:infinity)
     end
   end
 
   describe '#new_point' do
     it 'when given :infinity, returns the infinity point' do
-      expect(subject.new_point(:infinity)).to eq subject.infinity_point
+      expect(subject.new_point(:infinity)).to eq subject.infinity
     end
   end
 

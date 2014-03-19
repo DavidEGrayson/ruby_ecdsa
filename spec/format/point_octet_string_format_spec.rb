@@ -9,7 +9,7 @@ describe ECDSA::Format::PointOctetString do
     let(:converter) { ECDSA::Format::PointOctetString.method(:encode) }
 
     it 'converts infinity to "\x00"' do
-      expect(converter.call(group.infinity_point)).to eq "\x00"
+      expect(converter.call(group.infinity)).to eq "\x00"
     end
 
     context 'for a prime field' do
@@ -59,7 +59,7 @@ describe ECDSA::Format::PointOctetString do
     end
 
     it 'decodes "\x00" to infinity' do
-      expect(converter.call("\x00")).to eq group.infinity_point
+      expect(converter.call("\x00")).to eq group.infinity
     end
 
     it 'raises an error if the start byte is not recognized' do

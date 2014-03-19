@@ -30,7 +30,7 @@ module ECDSA
         case string[0].ord
         when 0
           check_length string, 1
-          return group.infinity_point
+          return group.infinity
         when 2
           decode_compressed string, group, 0
         when 3

@@ -44,7 +44,7 @@ module ECDSA
     def new_point(p)
       case p
       when :infinity
-        infinity_point
+        infinity
       when Array
         x, y = p
         Point.new(self, x, y)
@@ -55,8 +55,8 @@ module ECDSA
       end
     end
 
-    def infinity_point
-      @infinity_point ||= Point.new(self, :infinity)
+    def infinity
+      @infinity ||= Point.new(self, :infinity)
     end
 
     # The number of bits that it takes to represent a member of the field.
@@ -122,5 +122,9 @@ module ECDSA
     NAMES.each do |name|
       autoload name, 'ecdsa/group/' + name.downcase
     end
+
+    # Group#infinity_point was deprecated in favor of #infinity.
+    # This alias is for backwards compatibility with versions 0.1.4 and before.
+    alias_method :infinity_point, :infinity
   end
 end

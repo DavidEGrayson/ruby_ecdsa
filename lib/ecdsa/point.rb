@@ -40,7 +40,7 @@ module ECDSA
       return self if point.infinity?
 
       # SEC1, section 2.2.1, rule 3
-      return group.infinity_point if x == point.x && y == field.mod(-point.y)
+      return group.infinity if x == point.x && y == field.mod(-point.y)
 
       # SEC1, section 2.2.1, rule 4
       if x != point.x
@@ -72,7 +72,7 @@ module ECDSA
     def multiply_by_scalar(i)
       raise ArgumentError, 'Scalar is not an integer.' if !i.is_a?(Integer)
       raise ArgumentError, 'Scalar is negative.' if i < 0
-      result = group.infinity_point
+      result = group.infinity
       v = self
       while i > 0
         result = result.add_to_point(v) if i.odd?
