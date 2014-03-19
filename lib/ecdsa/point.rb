@@ -69,6 +69,8 @@ module ECDSA
     end
 
     def multiply_by_scalar(i)
+      raise ArgumentError, 'Scaler should be an integer.' if !i.is_a?(Integer)
+      raise ArgumentError, 'Scalar should not be negative.' if i < 0
       result = group.infinity_point
       v = self
       while i > 0
