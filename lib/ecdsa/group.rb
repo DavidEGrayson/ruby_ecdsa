@@ -77,7 +77,7 @@ module ECDSA
 
     # You should probably use include? instead of this.
     def point_satisfies_equation?(point)
-      field.mod(point.y * point.y) == equation_right_hand_side(point.x)
+      field.square(point.y) == equation_right_hand_side(point.x)
     end
 
     def equation_right_hand_side(x)
