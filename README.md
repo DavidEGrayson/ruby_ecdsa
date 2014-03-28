@@ -62,7 +62,7 @@ puts 'private key: %#x' % private_key
 ## Computing the public key for a private key
 
 The public key consists of the coordinates of the point that is computed by
-multiplying the generator point of the curve times the public key.
+multiplying the generator point of the curve with the private key.
 This is equivalent to adding the generators to itself `private_key` times.
 
 ```ruby
@@ -72,7 +72,7 @@ puts '  x: %#x' % public_key.x
 puts '  y: %#x' % public_key.y
 ```
 
-The public key is an `ECDSA::Point` object.
+The `public_key` object produced by the code above is an `ECDSA::Point` object.
     
 ## Encoding a public key as a binary string
 
@@ -83,9 +83,9 @@ you can convert it to the standard binary format defined in SEC2 with this code:
 public_key_string = ECDSA::Format::PointOctetString.encode(public_key, compression: true)
 ```
 
-The compression option decreases the size of the string by almost half, by only
-including one bit of the Y coordinate.  The other bits of the Y coordinate can
-be inferred from the X coordinate when the string is decoded.
+Setting the `compression` option to `true` decreases the size of the string by almost 50% by only
+including one bit of the Y coordinate.  The other bits of the Y coordinate are
+deduced from the X coordinate when the string is decoded.
     
 This code returns a binary string that can be stored in a database or file.
 
@@ -153,6 +153,8 @@ The code below shows how to verify an ECDSA signature.
 It assumes that you have an `ECDSA::Point` object representing a public key,
 a string or integer representing the digest of the signed messaged, and
 an `ECDSA::Signature` object representing the signature.
+The `valid_signature?` method returns `true` if the signature is valid and
+`false` if it is not.
 
 ```ruby
 valid = ECDSA.valid_signature?(public_key, digest, signature)
