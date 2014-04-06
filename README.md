@@ -170,3 +170,7 @@ puts "valid: #{valid}"
 
 This library should run on any Ruby interpreter that is compatible with Ruby 1.9.3.
 It has been tested on JRuby 1.7.11 and MRI.
+
+## Documentation
+
+For complete documentation, see the [ECDSA page on RubyDoc.info](http://rubydoc.info/gems/ecdsa).
