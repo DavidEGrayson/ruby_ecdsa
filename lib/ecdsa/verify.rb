@@ -1,21 +1,38 @@
 module ECDSA
+  # An instance of this class is raised if the signature is invalid.
   class InvalidSignatureError < StandardError
   end
 
-  # Algorithm taken from http://www.secg.org/collateral/sec1_final.pdf Section 4.1.4.
+  # Verifies the given {Signature} and returns true if it is valid.
+  #
+  # This algorithm comes from Section 4.1.4 of [SEC1](http://www.secg.org/collateral/sec1_final.pdf).
+  #
+  # @param public_key (Point)
+  # @param digest (String or Integer)
+  # @param signature (Signature)
+  # @return true if the ECDSA signature if valid, returns false otherwise.
   def self.valid_signature?(public_key, digest, signature)
     check_signature! public_key, digest, signature
   rescue InvalidSignatureError
     false
   end
 
+  # Verifies the given {Signature} and raises an {InvalidSignatureError} if it
+  # is invalid.
+  #
+  # This algorithm comes from Section 4.1.4 of [SEC1](http://www.secg.org/collateral/sec1_final.pdf).
+  #
+  # @param public_key (Point)
+  # @param digest (String or Integer)
+  # @param signature (Signature)
+  # @return true
   def self.check_signature!(public_key, digest, signature)
     group = public_key.group
     field = group.field
 
     # Step 1: r and s must be in the field and non-zero
-    raise InvalidSignatureError, 'r value is not the field.' if !field.include?(signature.r)
-    raise InvalidSignatureError, 's value is not the field.' if !field.include?(signature.s)
+    raise InvalidSignatureError, 'r is not in the field.' if !field.include?(signature.r)
+    raise InvalidSignatureError, 's is not in the field.' if !field.include?(signature.s)
     raise InvalidSignatureError, 'r is zero.' if signature.r.zero?
     raise InvalidSignatureError, 's is zero.' if signature.s.zero?
 

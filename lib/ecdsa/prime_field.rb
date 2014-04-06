@@ -1,5 +1,20 @@
 module ECDSA
+  # Instances of this class represent a field where the elements are non-negative
+  # integers less than a prime *p*.
+  #
+  # To add two elements of the field:
+  #
+  # ```ruby
+  # sum = field.mod(a + b)
+  # ```
+  #
+  # To multiply two elements of the field:
+  #
+  # ```ruby
+  # product = field.mod(a * b)
+  # ```
   class PrimeField
+    # @return (Integer) the prime number that the field is based on.
     attr_reader :prime
 
     def initialize(prime)
@@ -7,23 +22,33 @@ module ECDSA
       @prime = prime
     end
 
+    # Returns true if the given object is an integer and a member of the field.
+    # @param e (Object)
+    # @return (true or false)
     def include?(e)
       e.is_a?(Integer) && e >= 0 && e < prime
     end
 
-    def mod(num)
-      num % prime
+    # Calculates the remainder of `n` after being divided by the field's prime.
+    # @param n (Integer)
+    # @return (Integer)
+    def mod(n)
+      n % prime
     end
 
-    # http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
-    def inverse(num)
-      raise ArgumentError, '0 has no multiplicative inverse.' if num.zero?
+    # Computes the multiplicative inverse of a field element using the
+    # [Extended Euclidean Algorithm](http://en.wikipedia.org/wiki/Extended_Euclidean_algorithm).
+    #
+    # @param n (Integer)
+    # @return (Integer) integer `inv` such that `(inv * num) % prime` is one.
+    def inverse(n)
+      raise ArgumentError, '0 has no multiplicative inverse.' if n.zero?
 
       # For every i, we make sure that num * s[i] + prime * t[i] = r[i].
       # Eventually r[i] will equal 1 because gcd(num, prime) is always 1.
       # At that point, s[i] is the multiplicative inverse of num in the field.
 
-      remainders = [num, prime]
+      remainders = [n, prime]
       s = [1, 0]
       t = [0, 1]
       arrays = [remainders, s, t]
@@ -34,12 +59,16 @@ module ECDSA
         end
       end
 
-      raise 'Inversion bug: remainder is not than 1.' if remainders[-2] != 1
+      raise 'Inversion bug: remainder is not 1.' if remainders[-2] != 1
       mod s[-2]
     end
 
-    # Computes n raised to the power m.
-    # This algorithm uses the same idea as Point#multiply_by_scalar.
+    # Computes `n` raised to the power `m`.
+    # This algorithm uses the same idea as {Point#multiply_by_scalar}.
+    #
+    # @param n (Integer) the base
+    # @param m (Integer) the exponent
+    # @return (Integer)
     def power(n, m)
       result = 1
       v = n
@@ -51,11 +80,19 @@ module ECDSA
       result
     end
 
-    # Computes n^2.
+    # Computes `n` multiplied by itself.
+    # @param n (Integer)
+    # @return (Integer)
     def square(n)
       mod n * n
     end
 
+    # Finds all possible square roots of the given field element.
+    # Currently this method only supports fields where the prime is one
+    # less than a multiple of four.
+    #
+    # @param n (Integer)
+    # @return (Array) A sorted array of numbers whose square is equal to `n`.
     def square_roots(n)
       raise ArgumentError, "Not a member of the field: #{n}." if !include?(n)
       if (prime % 4) == 3
@@ -74,8 +111,7 @@ module ECDSA
     def square_roots_for_p_3_mod_4(n)
       candidate = power n, (prime + 1) / 4
       return [] if square(candidate) != n
-      return [candidate] if candidate.zero?
-      [candidate, mod(-candidate)].sort
+      [candidate, mod(-candidate)].uniq.sort
     end
   end
 end

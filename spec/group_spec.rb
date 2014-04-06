@@ -48,6 +48,20 @@ describe ECDSA::Group do
       expect(subject.solve_for_y(g.x)).to eq [g.y, subject.field.mod(-g.y)].sort
     end
   end
+
+  describe '#include' do
+    it 'returns true for the generator' do
+      expect(subject).to include subject.generator
+    end
+
+    it 'returns false for a point not on the curve' do
+      expect(subject).to_not include subject.new_point [44, 55]
+    end
+
+    it 'returns false for a point on the wrong group' do
+      expect(subject).to_not include ECDSA::Group::Nistp521.generator
+    end
+  end
 end
 
 describe 'specific groups' do

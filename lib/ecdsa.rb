@@ -5,7 +5,9 @@ require_relative 'ecdsa/sign'
 require_relative 'ecdsa/format'
 require_relative 'ecdsa/version'
 
+# The top-level module for the ECDSA gem.
 module ECDSA
+  # This method is NOT part of the public API of the ECDSA gem.
   def self.byte_length(integer)
     length = 0
     while integer > 0
@@ -15,6 +17,7 @@ module ECDSA
     length
   end
 
+  # This method is NOT part of the public API of the ECDSA gem.
   def self.bit_length(integer)
     length = 0
     while integer > 0
@@ -24,6 +27,7 @@ module ECDSA
     length
   end
 
+  # This method is NOT part of the public API of the ECDSA gem.
   def self.convert_digest_to_integer(digest)
     case digest
     when Integer then digest
@@ -32,6 +36,7 @@ module ECDSA
     end
   end
 
+  # This method is NOT part of the public API of the ECDSA gem.
   def self.leftmost_bits(n, bit_length)
     if n >= (1 << (8 * bit_length))
       raise 'Have not yet written code to handle this case'
@@ -40,14 +45,9 @@ module ECDSA
     end
   end
 
+  # This method is NOT part of the public API of the ECDSA gem.
   def self.normalize_digest(digest, bit_length)
     digest_num = convert_digest_to_integer(digest)
     leftmost_bits(digest_num, bit_length)
-  end
-end
-
-class String
-  def hex_inspect
-    '"' + each_byte.map { |b| '\x%02x' % b }.join + '"'
   end
 end

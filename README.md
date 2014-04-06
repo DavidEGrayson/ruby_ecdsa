@@ -163,3 +163,8 @@ signature is valid and `false` if it is not.
 valid = ECDSA.valid_signature?(public_key, digest, signature)
 puts "valid: #{valid}"
 ```
+
+## Supported platforms
+
+This library should run on any Ruby interpreter that is compatible with Ruby 1.9.3.
+It has been tested on JRuby 1.7.11 and MRI.
