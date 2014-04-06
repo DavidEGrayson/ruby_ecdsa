@@ -1,55 +1,60 @@
 # ECDSA gem for Ruby
 
-This gem implements the Elliptic Curve Digital Signature Algorithm (ECDSA) almost entirely in pure Ruby.
-It aims to be easier to use and easier to understand than Ruby's [OpenSSL EC support](http://www.ruby-doc.org/stdlib/libdoc/openssl/rdoc/OpenSSL/PKey/EC.html).
-This gem does use OpenSSL but it only uses it to decode and encode ASN1 strings for ECDSA signatures.
-All cryptographic calculations are done in pure Ruby.
+This gem implements the Elliptic Curve Digital Signature Algorithm (ECDSA)
+almost entirely in pure Ruby.  It aims to be easier to use and easier to
+understand than Ruby's
+[OpenSSL EC support](http://www.ruby-doc.org/stdlib/libdoc/openssl/rdoc/OpenSSL/PKey/EC.html).
+This gem does use OpenSSL but it only uses it to decode and encode ASN1 strings
+for ECDSA signatures.  All cryptographic calculations are done in pure Ruby.
 
-The main classes of this gem are `ECDSA::Group`, `ECDSA::Point`, and `ECDSA::Signature`.
-These classes operate on Ruby integers and do not deal at all with binary formatting.
-Encoding and decoding of binary formats is solely handled by classes under the `ECDSA::Format` module.
+The main classes of this gem are `ECDSA::Group`, `ECDSA::Point`, and
+`ECDSA::Signature`.  These classes operate on Ruby integers and do not deal at
+all with binary formatting.  Encoding and decoding of binary formats is solely
+handled by classes under the `ECDSA::Format` module.
 
-You can enter your own curve parameters by instantiating a new `ECDSA::Group` object or you can
-use a pre-existing group object such as `ECDSA::Group::Secp256k1`.
-The pre-existing groups can be seen in the `lib/ecdsa/group` folder, and include all the curves
-defined in [SEC2](http://www.secg.org/collateral/sec2_final.pdf) and [NIST's Recommended Elliptic Curves for Federal Government Use](http://csrc.nist.gov/groups/ST/toolkit/documents/dss/NISTReCur.pdf).
+You can enter your own curve parameters by instantiating a new `ECDSA::Group`
+object or you can use a pre-existing group object such as
+`ECDSA::Group::Secp256k1`.  The pre-existing groups can be seen in the
+`lib/ecdsa/group` folder, and include all the curves defined in
+[SEC2](http://www.secg.org/collateral/sec2_final.pdf) and
+[NIST's Recommended Elliptic Curves for Federal Government Use](http://csrc.nist.gov/groups/ST/toolkit/documents/dss/NISTReCur.pdf).
 
 This gem does not use any randomness; all the algorithms are deterministic.
-In order to sign a message, you must generate a secure random number _k_ between 0
-and the order of the group and pass it as an argument to `ECDSA.sign`.
-You should take measures to ensure that you never use the same random number to sign
-two different messages, or else it would be easy for someone to compute your
-private key from those two signatures.
+In order to sign a message, you must generate a secure random number _k_
+between 0 and the order of the group and pass it as an argument to `ECDSA.sign`.
+You should take measures to ensure that you never use the same random number to
+sign two different messages, or else it would be easy for someone to compute
+your private key from those two signatures.
 
 This gem is hosted at the [DavidEGrayson/ruby_ecdsa github repository](https://github.com/DavidEGrayson/ruby_ecdsa).
 
 ## Current limitations
 
-- This gem only supports fields of integers modulo a prime number (_F<sub>p</sub>_).
-  ECDSA's characteristic 2 fields are not supported.
+- This gem only supports fields of integers modulo a prime number
+  (_F<sub>p</sub>_).  ECDSA's characteristic 2 fields are not supported.
 - This gem can only compute square roots in prime fields over a prime _p_
   that is one less than a multiple of 4.
-  Computing a square root is required for parsing public keys stored in compressed form.
-- There is no documentation.  If you know a little bit about ECDSA and know how to read
-  Ruby source code, you can probably figure it out though.
-- The algorithms have not been optimized for speed, and will probably never be, because that
-  would hinder the goal of helping people understand ECDSA.
+  Computing a square root is required for parsing public keys stored in
+  compressed form.
+- The algorithms have not been optimized for speed, and will probably never be,
+  because that would hinder the goal of helping people understand ECDSA.
 
-This gem was not written by a cryptography expert and has not been carefully checked.
-It is provided "as is" and it is the user's responsibility to make sure it will be
-suitable for the desired purpose.
+This gem was not written by a cryptography expert and has not been carefully
+checked.  It is provided "as is" and it is the user's responsibility to make
+sure it will be suitable for the desired purpose.
 
 ## Installation
 
-This library is destributed as a gem named [ecdsa](https://rubygems.org/gems/ecdsa) at RubyGems.org.  To install it, run:
+This library is distributed as a gem named [ecdsa](https://rubygems.org/gems/ecdsa)
+at RubyGems.org.  To install it, run:
 
     gem install ecdsa
 
 ## Generating a private key
 
 An ECDSA private key is a random number between 1 and the order of the group.
-If you trust the `SecureRandom` class provided by your Ruby implementation, you could
-generate a private key using this code:
+If you trust the `SecureRandom` class provided by your Ruby implementation, you
+could generate a private key using this code:
 
 ```ruby
 require 'ecdsa'
@@ -63,7 +68,7 @@ puts 'private key: %#x' % private_key
 
 The public key consists of the coordinates of the point that is computed by
 multiplying the generator point of the curve with the private key.
-This is equivalent to adding the generators to itself `private_key` times.
+This is equivalent to adding the generator to itself `private_key` times.
 
 ```ruby
 public_key = group.generator.multiply_by_scalar(private_key)
@@ -83,16 +88,16 @@ you can convert it to the standard binary format defined in SEC2 with this code:
 public_key_string = ECDSA::Format::PointOctetString.encode(public_key, compression: true)
 ```
 
-Setting the `compression` option to `true` decreases the size of the string by almost 50% by only
-including one bit of the Y coordinate.  The other bits of the Y coordinate are
-deduced from the X coordinate when the string is decoded.
+Setting the `compression` option to `true` decreases the size of the string by
+almost 50% by only including one bit of the Y coordinate.  The other bits of the
+Y coordinate are deduced from the X coordinate when the string is decoded.
     
-This code returns a binary string that can be stored in a database or file.
+This code returns a binary string.
 
 ## Decoding a public key from a binary string
 
-To decode a SEC2 octet string, you can use the code below.
-The `group` object is assumed to be an `ECDSA::Group`.
+To decode a SEC2 octet string, you can use the code below.  The `group` object
+is assumed to be an `ECDSA::Group`.
 
 ```ruby
 public_key = ECDSA::Format::PointOctetString.decode(public_key_string, group)
@@ -100,21 +105,20 @@ public_key = ECDSA::Format::PointOctetString.decode(public_key_string, group)
 
 ## Signing a message
 
-This example shows how to generate a signature for a message.
-In this example, we will use SHA2 as our digest algorithm, but other algorithms
-can be used.
+This example shows how to generate a signature for a message.  In this example,
+we will use SHA2 as our digest algorithm, but other algorithms can be used.
 
-This example assumes that you trust the `SecureRandom` class in your
-Ruby implementation to generate the temporary key (also known as `k`).
-Beware that if you accidentally sign two different messages with the same
-temporary key, it is easy for someone to compute your private key from those
-two signatures and then forge your signature.
-Also, if someone can correctly guess the value of the temporary key used for
-a signature, they can compute your private key from that signature.
+This example assumes that you trust the `SecureRandom` class in your Ruby
+implementation to generate the temporary key (also known as `k`).  Beware that
+if you accidentally sign two different messages with the same temporary key, it
+is easy for someone to compute your private key from those two signatures and
+then forge your signature.  Also, if someone can correctly guess the value of
+the temporary key used for a signature, they can compute your private key from
+that signature.
 
-This example assumes that you have required the `ecdsa` gem, that you have
-an `ECDSA::Group` object named `group`, and that you have the private key
-stored as an integer in a variable named `private_key`.
+This example assumes that you have required the `ecdsa` gem, that you have an
+`ECDSA::Group` object named `group`, and that you have the private key stored as
+an integer in a variable named `private_key`.
 
 ```ruby
 require 'digest/sha2'
@@ -149,12 +153,11 @@ signature = ECDSA::Format::SignatureDerString.decode(signature_der_string)
     
 ## Verifying a signature
 
-The code below shows how to verify an ECDSA signature.
-It assumes that you have an `ECDSA::Point` object representing a public key,
-a string or integer representing the digest of the signed messaged, and
-an `ECDSA::Signature` object representing the signature.
-The `valid_signature?` method returns `true` if the signature is valid and
-`false` if it is not.
+The code below shows how to verify an ECDSA signature.  It assumes that you have
+an `ECDSA::Point` object representing a public key, a string or integer
+representing the digest of the signed messaged, and an `ECDSA::Signature` object
+representing the signature.  The `valid_signature?` method returns `true` if the
+signature is valid and `false` if it is not.
 
 ```ruby
 valid = ECDSA.valid_signature?(public_key, digest, signature)
