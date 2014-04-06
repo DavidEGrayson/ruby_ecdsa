@@ -1,14 +1,23 @@
 # encoding: ASCII-8BIT
 
-# The point octet string format is defined in http://www.secg.org/collateral/sec1_final.pdf .
-# Section 2.3.3: EllipticCurvePoint-to-OctetString Conversion
-# Section 2.3.4: OctetString-to-EllipticCurvePoint Conversion
-
 require_relative '../point'
 
 module ECDSA
   module Format
+    # This module provides methods for converting between {Point} objects and "octet strings",
+    # which are just strings with binary data in them that have the coordinates of the point.
+    # The point octet string format is defined in two sections of [SEC1](http://www.secg.org/collateral/sec1_final.pdf):
+    #
+    # * Section 2.3.3: EllipticCurvePoint-to-OctetString Conversion
+    # * Section 2.3.4: OctetString-to-EllipticCurvePoint Conversion
     module PointOctetString
+      # Converts a {Point} to an octet string.
+      #
+      # @param point (Point)
+      # @param opts (Hash)
+      # @option opts :compression Set this option to true to generate a compressed
+      #   octet string, which only has one bit of the Y coordinate.
+      #   (Default: false)
       def self.encode(point, opts = {})
         return "\x00" if point.infinity?
 
@@ -22,9 +31,19 @@ module ECDSA
         end
       end
 
-      # This is equivalent to ec_GFp_simple_oct2point in OpenSSL:
-      # https://github.com/openssl/openssl/blob/a898936218bc279b5d7cdf76d58a25e7a2d419cb/crypto/ec/ecp_oct.c
+      # Converts an octet string to a {Point} in the specified group.
+      # Raises a {DecodeError} if the string is invalid for any reason.
+      #
+      # This is equivalent to
+      # [ec_GFp_simple_oct2point](https://github.com/openssl/openssl/blob/a898936/crypto/ec/ecp_oct.c#L325)
+      # in OpenSSL.
+      #
+      # @param string (String)
+      # @param group (Group)
+      # @return (Point)
       def self.decode(string, group)
+        string = string.dup.force_encoding('BINARY')
+
         raise DecodeError, 'Point octet string is empty.' if string.empty?
 
         case string[0].ord

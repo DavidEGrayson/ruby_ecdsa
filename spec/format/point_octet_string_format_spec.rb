@@ -123,5 +123,13 @@ describe ECDSA::Format::PointOctetString do
         'Could not solve for y.'
     end
 
+    it 'can decode a string with the wrong encoding set' do
+      str = "\x04" \
+            "\x09\x48\x72\x39\x99\x5A\x5E\xE7\x6B\x55\xF9\xC2\xF0\x98" \
+            "\xA8\x9C\xE5\xAF\x87\x24\xC0\xA2\x3E\x0E\x0F\xF7\x75\x00"
+      str.force_encoding('UTF-8')
+      expect(converter.call(str)).to eq group.generator
+    end
+
   end
 end
