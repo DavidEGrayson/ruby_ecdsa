@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/DavidEGrayson/ruby_ecdsa.svg?branch=master)](https://travis-ci.org/DavidEGrayson/ruby_ecdsa)
+
 # ECDSA gem for Ruby
 
 This gem implements the Elliptic Curve Digital Signature Algorithm (ECDSA)
