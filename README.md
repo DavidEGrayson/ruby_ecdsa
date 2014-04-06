@@ -84,7 +84,7 @@ The `public_key` object produced by the code above is an `ECDSA::Point` object.
 ## Encoding a public key as a binary string
 
 Assuming that you have an `ECDSA::Point` object representing the public key,
-you can convert it to the standard binary format defined in SEC2 with this code:
+you can convert it to the standard binary format defined in SEC1 with this code:
 
 ```ruby
 public_key_string = ECDSA::Format::PointOctetString.encode(public_key, compression: true)
@@ -98,7 +98,7 @@ This code returns a binary string.
 
 ## Decoding a public key from a binary string
 
-To decode a SEC2 octet string, you can use the code below.  The `group` object
+To decode a SEC1 octet string, you can use the code below.  The `group` object
 is assumed to be an `ECDSA::Group`.
 
 ```ruby
