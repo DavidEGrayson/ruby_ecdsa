@@ -1,7 +1,7 @@
 require_relative 'ecdsa/group'
 require_relative 'ecdsa/signature'
-require_relative 'ecdsa/verify'
 require_relative 'ecdsa/sign'
+require_relative 'ecdsa/verify'
 require_relative 'ecdsa/format'
 require_relative 'ecdsa/version'
 
@@ -38,8 +38,9 @@ module ECDSA
 
   # This method is NOT part of the public API of the ECDSA gem.
   def self.leftmost_bits(n, bit_length)
-    if n >= (1 << (8 * bit_length))
-      raise 'Have not yet written code to handle this case'
+    if n >= (1 << bit_length)
+      # TODO: implement this
+      raise NotImplementedError, 'Have not yet written code to handle this case'
     else
       n
     end
