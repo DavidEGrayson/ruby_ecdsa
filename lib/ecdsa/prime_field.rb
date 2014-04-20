@@ -163,6 +163,7 @@ module ECDSA
 
     # This is Algorithm 3.34 from http://cacr.uwaterloo.ca/hac/
     def square_roots_default(n)
+      return [0] if n == 0
       return [] if jacobi(n) == -1   # Step 1
 
       # Step 2, except we don't want to use randomness.
