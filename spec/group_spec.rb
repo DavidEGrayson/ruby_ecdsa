@@ -10,102 +10,102 @@ describe ECDSA::Group do
   end
 
   it '#inspect is nice' do
-    expect(subject.inspect).to eq '#<ECDSA::Group:secp128r2>'
+    expect(group.inspect).to eq '#<ECDSA::Group:secp128r2>'
   end
 
   it '#to_s is the same as inspect' do
-    expect(subject.to_s).to eq subject.inspect
+    expect(group.to_s).to eq group.inspect
   end
 
   describe '#infinity' do
     it 'returns the infinity point' do
-      expect(subject.infinity).to be_infinity
+      expect(group.infinity).to be_infinity
     end
 
     it 'has an alias #infinity_point for backwards compatibility' do
-      expect(subject.method(:infinity_point)).to eq subject.method(:infinity)
+      expect(group.method(:infinity_point)).to eq group.method(:infinity)
     end
   end
 
   describe '#new_point' do
     it 'when given :infinity, returns the infinity point' do
-      expect(subject.new_point(:infinity)).to eq subject.infinity
+      expect(group.new_point(:infinity)).to eq group.infinity
     end
   end
 
   describe '#solve_for_y' do
     it 'when given the x of the generator point returns y and -y' do
-      g = subject.generator
-      expect(subject.solve_for_y(g.x)).to eq [g.y, subject.field.mod(-g.y)].sort
+      g = group.generator
+      expect(group.solve_for_y(g.x)).to eq [g.y, group.field.mod(-g.y)].sort
     end
   end
 
   describe '#include?' do
     it 'returns true for the infinity point' do
-      expect(subject).to include subject.infinity
+      expect(group).to include group.infinity
     end
 
     it 'returns true for the generator' do
-      expect(subject).to include subject.generator
+      expect(group).to include group.generator
     end
 
     it 'returns true for a point on the curve that is not a multiple of the generator' do
-      expect(subject).to include partially_valid_point
+      expect(group).to include partially_valid_point
     end
 
     it 'returns false for a point not on the curve' do
-      expect(subject).to_not include subject.new_point [44, 55]
+      expect(group).to_not include group.new_point [44, 55]
     end
 
     it 'returns false for a point on the wrong group' do
-      point = ECDSA::Group::Nistp521.new_point subject.generator.coords
-      expect(subject).to_not include point
+      point = ECDSA::Group::Nistp521.new_point group.generator.coords
+      expect(group).to_not include point
     end
   end
 
   describe '#partially_valid_public_key?' do
     it 'returns false for the infinity point' do
-      expect(subject).to_not be_partially_valid_public_key subject.infinity
+      expect(group).to_not be_partially_valid_public_key group.infinity
     end
 
     it 'returns true for the generator' do
-      expect(subject).to be_partially_valid_public_key subject.generator
+      expect(group).to be_partially_valid_public_key group.generator
     end
 
     it 'returns true for a point on the curve that is not a multiple of the generator' do
-      expect(subject).to be_partially_valid_public_key partially_valid_point
+      expect(group).to be_partially_valid_public_key partially_valid_point
     end
 
     it 'returns false for a point not on the curve' do
-      expect(subject).to_not be_partially_valid_public_key subject.new_point [44, 55]
+      expect(group).to_not be_partially_valid_public_key group.new_point [44, 55]
     end
 
     it 'returns false for a point on the wrong group' do
-      point = ECDSA::Group::Nistp521.new_point subject.generator.coords
-      expect(subject).to_not be_partially_valid_public_key point
+      point = ECDSA::Group::Nistp521.new_point group.generator.coords
+      expect(group).to_not be_partially_valid_public_key point
     end
   end
 
   describe '#valid_public_key?' do
     it 'returns false for the infinity point' do
-      expect(subject).to_not be_valid_public_key subject.infinity
+      expect(group).to_not be_valid_public_key group.infinity
     end
 
     it 'returns true for the generator' do
-      expect(subject).to be_valid_public_key subject.generator
+      expect(group).to be_valid_public_key group.generator
     end
 
     it 'returns false for a point on the curve that is not a multiple of the generator' do
-      expect(subject).to_not be_valid_public_key partially_valid_point
+      expect(group).to_not be_valid_public_key partially_valid_point
     end
 
     it 'returns false for a point not on the curve' do
-      expect(subject).to_not be_valid_public_key subject.new_point [44, 55]
+      expect(group).to_not be_valid_public_key group.new_point [44, 55]
     end
 
     it 'returns false for a point on the wrong group' do
-      point = ECDSA::Group::Nistp521.new_point subject.generator.coords
-      expect(subject).to_not be_valid_public_key point
+      point = ECDSA::Group::Nistp521.new_point group.generator.coords
+      expect(group).to_not be_valid_public_key point
     end
   end
 
@@ -113,28 +113,28 @@ end
 
 shared_examples_for 'group' do
   it 'generator point is on the curve' do
-    expect(subject.include?(subject.generator)).to eq true
+    expect(group.include?(group.generator)).to eq true
   end
 
   it 'has maybe the right order' do
-    expect(subject.generator.multiply_by_scalar(subject.order)).to eq subject.infinity
+    expect(group.generator.multiply_by_scalar(group.order)).to eq group.infinity
   end
 
   it '#name matches the string used to look it up' do
-    expect(subject.name).to eq name.downcase
+    expect(group.name).to eq name.downcase
   end
 end
 
 describe 'specific groups' do
   describe ECDSA::Group::Secp256k1 do
-    subject { ECDSA::Group::Secp256k1 }
+    subject(:group) { ECDSA::Group::Secp256k1 }
 
     it 'has a bit length of 256' do
-      expect(subject.bit_length).to eq 256
+      expect(group.bit_length).to eq 256
     end
 
     it 'has the right generator point' do
-      expect(subject.generator.coords).to eq [
+      expect(group.generator.coords).to eq [
         0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798,
         0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8,
       ]
@@ -144,7 +144,7 @@ describe 'specific groups' do
   ECDSA::Group::NAMES.each do |name|
     group = ECDSA::Group.const_get(name)
     describe group do
-      subject { group }
+      subject(:group) { group }
       let(:name) { name }
       it_behaves_like 'group'
     end
