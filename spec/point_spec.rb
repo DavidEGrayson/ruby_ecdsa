@@ -5,7 +5,7 @@ describe ECDSA::Point do
     ECDSA::Group::Secp256k1
   end
 
-  describe 'multiply_by_scalar' do
+  describe '#multiply_by_scalar' do
     it 'does not give infinity when we multiply the generator of secp256k1 by a number less than the order' do
       # this test was added to fix a particular bug
       k = 2
@@ -45,7 +45,7 @@ describe ECDSA::Point do
     end
   end
 
-  describe 'add_to_point' do
+  describe '#add_to_point' do
     context 'when adding point + infinity' do
       it 'returns the point' do
         expect(group.generator.add_to_point(group.infinity)).to eq group.generator
@@ -59,7 +59,7 @@ describe ECDSA::Point do
     end
   end
 
-  describe 'negate' do
+  describe '#negate' do
     it 'returns infinity for infinity' do
       expect(group.infinity.negate).to eq group.infinity
     end
@@ -68,13 +68,6 @@ describe ECDSA::Point do
       n = group.generator.negate
       expect(n.x).to eq group.generator.x
       expect(n.y).to eq group.field.mod(-group.generator.y)
-    end
-  end
-
-  describe 'double' do
-    it 'can double the generator of secp256k1' do
-      point = group.generator.double
-      expect(point).to_not be_infinity
     end
   end
 
@@ -87,6 +80,66 @@ describe ECDSA::Point do
 
     it 'shows infinity if the point is infinity' do
       expect(group.infinity.inspect).to eq '#<ECDSA::Point: secp256k1, infinity>'
+    end
+  end
+
+  shared_examples_for 'coordinate comparator' do |method|
+    let(:p1) { group.new_point [4, 5] }
+
+    it 'returns true for points with the same coordinates' do
+      p2 = group.new_point [4, 5]
+      expect(p1.send(method, p2)).to eq true
+    end
+
+    it 'returns false for points with different x coordinates' do
+      p2 = group.new_point [5, 5]
+      expect(p1.send(method, p2)).to eq false
+    end
+
+    it 'returns false for points with different y coordinates' do
+      p2 = group.new_point [4, 4]
+      expect(p1.send(method, p2)).to eq false
+    end
+
+    it 'returns false for non-points' do
+      expect(p1.send(method, 17)).to eq false
+    end
+
+    it 'returns false for points on another curve' do
+      p2 = ECDSA::Group::Secp112r2.new_point [4, 5]
+      expect(p1.send(method, p2)).to eq false
+    end
+  end
+
+  describe '#eql?' do
+    it_behaves_like 'coordinate comparator', :eql?
+  end
+
+  describe '#==' do
+    it_behaves_like 'coordinate comparator', :==
+  end
+
+  describe '#hash' do
+    let(:p1) { group.new_point [4, 5] }
+
+    it 'gives the same value for two points that are equal' do
+      p2 = group.new_point [4, 5]
+      expect(p1.hash).to eq p2.hash
+    end
+
+    it 'usually differs for two points with different x coordinates' do
+      p2 = group.new_point [5, 5]
+      expect(p1.hash).to_not eq p2.hash
+    end
+
+    it 'usually differs for two points with different y coordinates' do
+      p2 = group.new_point [4, 4]
+      expect(p1.hash).to_not eq p2.hash
+    end
+
+    it 'usually differs for two points on different curves' do
+      p2 = ECDSA::Group::Secp112r2.new_point [4, 5]
+      expect(p1.hash).to_not eq p2.hash
     end
   end
 end

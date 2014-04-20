@@ -138,6 +138,16 @@ module ECDSA
       eql?(other)
     end
 
+    # Returns a hash for this point so it can be stored in hash tables
+    # with the expected behavior.  Two points that have the same coordinates
+    # and are on the same curve are equal, so they should not get separate
+    # spots in a hash table.
+    #
+    # @return (Integer)
+    def hash
+      [group, x, y].hash
+    end
+
     # Returns true if this instance represents the infinity point (the additive
     # identity of the group).
     #
