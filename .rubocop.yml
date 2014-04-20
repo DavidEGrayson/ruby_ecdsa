@@ -10,9 +10,6 @@ CyclomaticComplexity:
 Documentation:
   Enabled: false
 
-FavorUnlessOverNegatedIf:
-  Enabled: false
-
 FormatString:
   EnforcedStyle: percent
 
@@ -24,6 +21,11 @@ LineLength:
 
 MethodLength:
   Max: 20
+
+# The unless keyword doesn't exists in most other languages and it makes lines
+# longer.  Let's not force ourselves to use it.
+NegatedIf:
+  Enabled: false
 
 # Buggy cop: it was auto-correcting files that were excluded when I ran rubcop -a
 NumericLiterals:

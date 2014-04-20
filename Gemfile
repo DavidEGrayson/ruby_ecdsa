@@ -2,7 +2,7 @@ source 'https://rubygems.org/'
 
 gem 'rspec'
 
-gem 'rubocop', '0.19.1'
+gem 'rubocop', '0.20.1'
 
 gem 'yard'
 gem 'markdown'
