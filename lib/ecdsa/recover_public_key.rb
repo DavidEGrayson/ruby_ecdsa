@@ -3,7 +3,9 @@ module ECDSA
   # that it signs.
   #
   # If you do not pass a block to `recover_public_key` then it returns an
-  # Enumerator that will lazily find more public keys when needed.
+  # Enumerator that will lazily find more public keys when needed.  If you
+  # are going to iterate through the enumerator more than once, you should
+  # probably convert it to an array first with `to_a` to save CPU time.
   #
   # If you pass a block, it will yield the public keys to the block one at a
   # time as it finds them.
@@ -15,12 +17,12 @@ module ECDSA
   # This algorithm comes from Section 4.1.6 of [SEC1 2.0](http://www.secg.org/download/aid-780/sec1-v2.pdf)
   #
   # @param group (Group)
-  # @param digest (String or Integer)
+  # @param digest (String)
   # @param signature (Signature)
   def self.recover_public_key(group, digest, signature)
     return enum_for(:recover_public_key, group, digest, signature) if !block_given?
 
-    digset = normalize_digest(digest, group.bit_length)
+    digest = normalize_digest(digest, group.bit_length)
 
     each_possible_temporary_public_key(group, digest, signature) do |point|
       yield calculate_public_key(group, digest, signature, point)
@@ -35,8 +37,7 @@ module ECDSA
     # Instead of using the cofactor as the iteration limit as specified in SEC1,
     # we just iterate until x is too large to fit in the underlying field.
     # That way we don't have to know the cofactor of the group.
-    (0..group.cofactor).each do |j|
-      x = signature.r + j * group.order
+    signature.r.step(group.field.prime - 1, group.order) do |x|
       group.solve_for_y(x).each do |y|
         point = group.new_point [x, y]
         yield point if point.multiply_by_scalar(group.order).infinity?
