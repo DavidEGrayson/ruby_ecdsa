@@ -101,12 +101,18 @@ module ECDSA
       end
     end
 
-    private
-
-    def jacobi(n)
-      self.class.send(:jacobi, n, prime)
+    # This method is NOT part of the public API of the ECDSA gem.
+    def self.factor_out_twos(x)
+      e = 0
+      while x.even?
+        x /= 2
+        e += 1
+      end
+      [e, x]
     end
 
+    # This method is NOT part of the public API of the ECDSA gem.
+    #
     # Algorithm algorithm 2.149 from http://cacr.uwaterloo.ca/hac/
     def self.jacobi(n, p)
       raise 'Jacobi symbol is not defined for primes less than 3.' if p < 3
@@ -116,20 +122,19 @@ module ECDSA
       return 0 if n == 0  # Step 1
       return 1 if n == 1  # Step 2
 
-      # Step 3  # TODO: use factor_out_twos
-      n1 = n
-      e = 0
-      while n1.even?
-        n1 /= 2
-        e += 1
-      end
-
+      e, n1 = factor_out_twos n                         # Step 3
       s = (e.even? || [1, 7].include?(p % 8)) ? 1 : -1  # Step 4
       s = -s if (p % 4) == 3 && (n1 % 4) == 3           # Step 5
 
       # Step 6 and 7
       return s if n1 == 1
       s * jacobi(p, n1)
+    end
+
+    private
+
+    def jacobi(n)
+      self.class.send(:jacobi, n, prime)
     end
 
     # This is Algorithm 1 from http://math.stanford.edu/~jbooher/expos/sqr_qnr.pdf
@@ -163,7 +168,7 @@ module ECDSA
       # Step 2, except we don't want to use randomness.
       b = (1...prime).find { |i| jacobi(i) == -1 }
 
-      s, t = factor_out_twos(prime - 1)  # Step 3
+      s, t = self.class.factor_out_twos(prime - 1)  # Step 3
       n_inv = inverse(n)  # Step 4
 
       # Step 5
@@ -178,15 +183,6 @@ module ECDSA
       end
 
       square_roots_given_candidate n, r
-    end
-
-    def factor_out_twos(x)
-      e = 0
-      while x.even?
-        x /= 2
-        e += 1
-      end
-      [e, x]
     end
 
     def square_roots_given_candidate(n, candidate)

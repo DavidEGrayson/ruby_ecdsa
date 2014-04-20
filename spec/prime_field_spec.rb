@@ -171,7 +171,7 @@ describe ECDSA::PrimeField do
       context "with p = #{p}" do
         data[0].each do |n|
           it "returns -1 for n = #{n}" do
-            expect(ECDSA::PrimeField.send(:jacobi, n, p)).to eq -1
+            expect(ECDSA::PrimeField.send(:jacobi, n, p)).to eq(-1)
           end
         end
 
