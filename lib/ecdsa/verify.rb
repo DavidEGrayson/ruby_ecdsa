@@ -31,10 +31,10 @@ module ECDSA
     field = group.field
 
     # Step 1: r and s must be in the field and non-zero
-    raise InvalidSignatureError, 'r is not in the field.' if !field.include?(signature.r)
-    raise InvalidSignatureError, 's is not in the field.' if !field.include?(signature.s)
-    raise InvalidSignatureError, 'r is zero.' if signature.r.zero?
-    raise InvalidSignatureError, 's is zero.' if signature.s.zero?
+    raise InvalidSignatureError, 'Invalid signature: r is not in the field.' if !field.include?(signature.r)
+    raise InvalidSignatureError, 'Invalid signature: s is not in the field.' if !field.include?(signature.s)
+    raise InvalidSignatureError, 'Invalid signature: r is zero.' if signature.r.zero?
+    raise InvalidSignatureError, 'Invalid signature: s is zero.' if signature.s.zero?
 
     # Step 2 was already performed when the digest of the message was computed.
 
@@ -49,16 +49,13 @@ module ECDSA
 
     # Step 5
     r = group.generator.multiply_by_scalar(u1).add_to_point public_key.multiply_by_scalar(u2)
-    raise InvalidSignatureError, 'r is infinity in step 5.' if r.infinity?
+    raise InvalidSignatureError, 'Invalid signature: r is infinity in step 5.' if r.infinity?
 
-    # Step 6
-    xr = r.x
-
-    # Step 7
-    v = point_field.mod xr
+    # Steps 6 and 7
+    v = point_field.mod r.x
 
     # Step 8
-    raise InvalidSignatureError, 'v does not equal r.' if v != signature.r
+    raise InvalidSignatureError, 'Invalid signature: v does not equal r.' if v != signature.r
 
     true
   end
