@@ -105,6 +105,25 @@ module ECDSA
       point.infinity? or point_satisfies_equation?(point)
     end
 
+    # Returns true if the point is not infinity, it is a solution to the curve's
+    # defining equation, and it is a multiple of G.  This process is defined in
+    # SEC1 2.0, Section 3.2.2.1: Elliptic Curve Public Key Partial Validation Primitive
+    def valid_public_key?(point)
+      return false if point.group != self
+      return false if point.infinity?
+      return false if !point_satisfies_equation?(point)
+      point.multiply_by_scalar(order).infinity?
+    end
+
+    # Returns true if the point is not infinity and it is a solution to
+    # the curve's defining equation.  This is defined in
+    # SEC1 2.0, Section 3.2.3.1: Elliptic Curve Public Key Partial Validation Primitive
+    def partially_valid_public_key?(point)
+      return false if point.group != self
+      return false if point.infinity?
+      point_satisfies_equation?(point)
+    end
+
     # Given the x coordinate of a point, finds all possible corresponding y coordinates.
     #
     # @return (Array)

@@ -1,25 +1,16 @@
 require 'spec_helper'
-require 'prime'
-
-shared_examples_for 'group' do
-  it 'generator point is on the curve' do
-    expect(subject.include?(subject.generator)).to eq true
-  end
-
-  it 'has maybe the right order' do
-    expect(subject.generator.multiply_by_scalar(subject.order)).to eq subject.infinity
-  end
-
-  it '#name matches the string used to look it up' do
-    expect(subject.name).to eq name.downcase
-  end
-end
 
 describe ECDSA::Group do
-  subject { ECDSA::Group::Secp256k1 }
+  subject(:group) { ECDSA::Group::Secp128r2 }
+
+  let(:partially_valid_point) do
+    x = 0xa4ba08661ccb3c0a4f0be92e7d7b3efa
+    y = group.solve_for_y(x).first
+    group.new_point [x, y]
+  end
 
   it '#inspect is nice' do
-    expect(subject.inspect).to eq '#<ECDSA::Group:secp256k1>'
+    expect(subject.inspect).to eq '#<ECDSA::Group:secp128r2>'
   end
 
   it '#to_s is the same as inspect' do
@@ -49,9 +40,17 @@ describe ECDSA::Group do
     end
   end
 
-  describe '#include' do
+  describe '#include?' do
+    it 'returns true for the infinity point' do
+      expect(subject).to include subject.infinity
+    end
+
     it 'returns true for the generator' do
       expect(subject).to include subject.generator
+    end
+
+    it 'returns true for a point on the curve that is not a multiple of the generator' do
+      expect(subject).to include partially_valid_point
     end
 
     it 'returns false for a point not on the curve' do
@@ -59,8 +58,70 @@ describe ECDSA::Group do
     end
 
     it 'returns false for a point on the wrong group' do
-      expect(subject).to_not include ECDSA::Group::Nistp521.generator
+      point = ECDSA::Group::Nistp521.new_point subject.generator.coords
+      expect(subject).to_not include point
     end
+  end
+
+  describe '#partially_valid_public_key?' do
+    it 'returns false for the infinity point' do
+      expect(subject).to_not be_partially_valid_public_key subject.infinity
+    end
+
+    it 'returns true for the generator' do
+      expect(subject).to be_partially_valid_public_key subject.generator
+    end
+
+    it 'returns true for a point on the curve that is not a multiple of the generator' do
+      expect(subject).to be_partially_valid_public_key partially_valid_point
+    end
+
+    it 'returns false for a point not on the curve' do
+      expect(subject).to_not be_partially_valid_public_key subject.new_point [44, 55]
+    end
+
+    it 'returns false for a point on the wrong group' do
+      point = ECDSA::Group::Nistp521.new_point subject.generator.coords
+      expect(subject).to_not be_partially_valid_public_key point
+    end
+  end
+
+  describe '#valid_public_key?' do
+    it 'returns false for the infinity point' do
+      expect(subject).to_not be_valid_public_key subject.infinity
+    end
+
+    it 'returns true for the generator' do
+      expect(subject).to be_valid_public_key subject.generator
+    end
+
+    it 'returns false for a point on the curve that is not a multiple of the generator' do
+      expect(subject).to_not be_valid_public_key partially_valid_point
+    end
+
+    it 'returns false for a point not on the curve' do
+      expect(subject).to_not be_valid_public_key subject.new_point [44, 55]
+    end
+
+    it 'returns false for a point on the wrong group' do
+      point = ECDSA::Group::Nistp521.new_point subject.generator.coords
+      expect(subject).to_not be_valid_public_key point
+    end
+  end
+
+end
+
+shared_examples_for 'group' do
+  it 'generator point is on the curve' do
+    expect(subject.include?(subject.generator)).to eq true
+  end
+
+  it 'has maybe the right order' do
+    expect(subject.generator.multiply_by_scalar(subject.order)).to eq subject.infinity
+  end
+
+  it '#name matches the string used to look it up' do
+    expect(subject.name).to eq name.downcase
   end
 end
 
