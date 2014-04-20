@@ -103,6 +103,36 @@ describe ECDSA::PrimeField do
         expect(field.square_roots(n)).to eq []
       end
     end
+
+    context 'if the prime is 1 mod 8' do
+      let(:field) { ECDSA::Group::Nistp224.field }
+      specify { expect(field.prime % 8).to eq 1 }
+
+      it 'can calculate the square root of some number' do
+        n = 0x184fbd4fe8e123c572b92d3d36526bf8fd74f182cabddd89e1a7608b
+        expect(field.square_roots(n)).to eq [
+          0x7b2bf4e3ca4fd4d306fa7a88c8c13998b1165820a9a3dc9d31220109,
+          0x84d40b1c35b02b2cf9058577373ec6664ee9a7df565c2362ceddfef8,
+        ]
+      end
+
+      it 'returns nothing for a number without a square root' do
+        n = 0x95a81e99ed57ac8de0dcc1be14f604b6b7c9a15feb109654390527a8
+        expect(field.square_roots(n)).to eq []
+      end
+    end
+
+    context 'if the prime is 2' do
+      let(:field) { ECDSA::PrimeField.new(2) }
+
+      it 'returns 0 for 0' do
+        expect(field.square_roots(0)).to eq [0]
+      end
+
+      it 'returns 1 for 1' do
+        expect(field.square_roots(1)).to eq [1]
+      end
+    end
   end
 
   describe '#power' do
@@ -127,7 +157,31 @@ describe ECDSA::PrimeField do
     it 'returns 402 for 1311' do
       expect(field.square(1311)).to eq 402
     end
+  end
 
+  describe '.jacobi (private)' do
+    # These test cases come from Example 2.153 from http://cacr.uwaterloo.ca/hac/
+    test_cases = {
+      3 => [[2, 5, 8, 11, 17, 20], [1, 4, 10, 13, 16, 19]],
+      7 => [[5, 10, 13, 19, 20], [1, 2, 4, 8, 11, 16]],
+      21 => [[2, 8, 10, 11, 13, 19], [1, 4, 5, 16, 17, 20]],
+    }
+
+    test_cases.each do |p, data|
+      context "with p = #{p}" do
+        data[0].each do |n|
+          it "returns -1 for n = #{n}" do
+            expect(ECDSA::PrimeField.send(:jacobi, n, p)).to eq -1
+          end
+        end
+
+        data[1].each do |n|
+          it "returns 1 for n = #{n}" do
+            expect(ECDSA::PrimeField.send(:jacobi, n, p)).to eq 1
+          end
+        end
+      end
+    end
   end
 
 end

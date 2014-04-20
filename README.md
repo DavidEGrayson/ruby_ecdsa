@@ -34,10 +34,6 @@ This gem is hosted at the [DavidEGrayson/ruby_ecdsa github repository](https://g
 
 - This gem only supports fields of integers modulo a prime number
   (_F<sub>p</sub>_).  ECDSA's characteristic 2 fields are not supported.
-- This gem can only compute square roots in prime fields over a prime _p_
-  that is one less than a multiple of 4.
-  Computing a square root is required for parsing public keys stored in
-  compressed form.
 - The algorithms have not been optimized for speed, and will probably never be,
   because that would hinder the goal of helping people understand ECDSA.
 
