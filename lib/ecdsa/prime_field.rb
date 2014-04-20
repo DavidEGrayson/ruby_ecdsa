@@ -162,6 +162,8 @@ module ECDSA
     end
 
     # This is Algorithm 3.34 from http://cacr.uwaterloo.ca/hac/
+    # It has no limitations except prime must be at least three, so we could
+    # remove all the other square root algorithms if we wanted to.
     def square_roots_default(n)
       return [0] if n == 0
       return [] if jacobi(n) == -1   # Step 1
