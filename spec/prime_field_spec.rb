@@ -76,6 +76,33 @@ describe ECDSA::PrimeField do
         expect(field.square_roots(1366)).to eq []
       end
     end
+
+    context 'if the prime is equivalent to 5 mod 8' do
+      let(:field) { ECDSA::Group::Secp224k1.field }
+
+      specify { expect(field.prime % 8).to eq 5 }
+
+      it 'can calculate the square root of some number (d=1)' do
+        n = 0xf55074f61370f55558add0478947a9fbc8f11281925f5b907b0cc12c
+        expect(field.square_roots(n)).to eq [
+          0xe0d2648bb5d136d71c565a34c4dd9cacf7fb15a0bed82ee371a1cc7,
+          0xf1f2d9b744a2ec928e3a9a5cb3b2263530804ea5f4127d10c8e5c8a6,
+        ]
+      end
+
+      it 'can calculate the square root of some number (d=-1)' do
+        n = 0xcd0f7d84a2df8e7d0b97f6d9afbee85e9b1bfd0fa9862dd439285da6
+        expect(field.square_roots(n)).to eq [
+          0x402a63ee19abceb3a03f51c1f615bcb9822751b8178a0fd3eb088091,
+          0xbfd59c11e654314c5fc0ae3e09ea43467dd8ae47e875f02b14f764dc,
+        ]
+      end
+
+      it 'returns nothing for numbers without a square root' do
+        n = 0xb00a6fc555ab5034b48b756bf2c9f4203702d1187112bba7fe328bed
+        expect(field.square_roots(n)).to eq []
+      end
+    end
   end
 
   describe '#power' do

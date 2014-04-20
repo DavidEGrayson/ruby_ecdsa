@@ -97,6 +97,8 @@ module ECDSA
       raise ArgumentError, "Not a member of the field: #{n}." if !include?(n)
       if (prime % 4) == 3
         square_roots_for_p_3_mod_4(n)
+      elsif (prime % 8) == 5
+        square_roots_for_p_5_mod_8(n)
       else
         raise NotImplementedError, 'Square root is only implemented in fields where the prime is equal to 3 mod 4.'
       end
@@ -105,11 +107,30 @@ module ECDSA
     private
 
     # This is Algorithm 1 from http://math.stanford.edu/~jbooher/expos/sqr_qnr.pdf
+    # It is also Algorithm 3.36 from http://cacr.uwaterloo.ca/hac/
     # The algorithm assumes that its input actually does have a square root.
     # To get around that, we double check the answer after running the algorithm to make
     # sure it works.
     def square_roots_for_p_3_mod_4(n)
       candidate = power n, (prime + 1) / 4
+      square_roots_given_candidate n, candidate
+    end
+
+    # This is Algorithm 3.37 from http://cacr.uwaterloo.ca/hac/
+    def square_roots_for_p_5_mod_8(n)
+      case power n, (prime - 1) / 4
+      when 1
+        candidate = power n, (prime + 3) / 8
+      when prime - 1
+        candidate = mod 2 * n * power(4 * n, (prime - 5) / 8)
+      else
+        # I think this can happen because we are not checking the Jacobi.
+        return []
+      end
+      square_roots_given_candidate n, candidate
+    end
+
+    def square_roots_given_candidate(n, candidate)
       return [] if square(candidate) != n
       [candidate, mod(-candidate)].uniq.sort
     end
