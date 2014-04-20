@@ -83,63 +83,44 @@ describe ECDSA::Point do
     end
   end
 
-  shared_examples_for 'coordinate comparator' do |method|
+  shared_examples_for 'point comparator' do |method|
     let(:p1) { group.new_point [4, 5] }
 
     it 'returns true for points with the same coordinates' do
       p2 = group.new_point [4, 5]
-      expect(p1.send(method, p2)).to eq true
+      expect(method.call(p1, p2)).to eq true
     end
 
     it 'returns false for points with different x coordinates' do
       p2 = group.new_point [5, 5]
-      expect(p1.send(method, p2)).to eq false
+      expect(method.call(p1, p2)).to eq false
     end
 
     it 'returns false for points with different y coordinates' do
       p2 = group.new_point [4, 4]
-      expect(p1.send(method, p2)).to eq false
+      expect(method.call(p1, p2)).to eq false
     end
 
     it 'returns false for non-points' do
-      expect(p1.send(method, 17)).to eq false
+      expect(method.call(p1, 44)).to eq false
     end
 
     it 'returns false for points on another curve' do
       p2 = ECDSA::Group::Secp112r2.new_point [4, 5]
-      expect(p1.send(method, p2)).to eq false
+      expect(method.call(p1, p2)).to eq false
     end
   end
 
   describe '#eql?' do
-    it_behaves_like 'coordinate comparator', :eql?
+    it_behaves_like 'point comparator', ->(p, q) { p.eql? q }
   end
 
   describe '#==' do
-    it_behaves_like 'coordinate comparator', :==
+    it_behaves_like 'point comparator', ->(p, q) { p == q }
   end
 
   describe '#hash' do
-    let(:p1) { group.new_point [4, 5] }
-
-    it 'gives the same value for two points that are equal' do
-      p2 = group.new_point [4, 5]
-      expect(p1.hash).to eq p2.hash
-    end
-
-    it 'usually differs for two points with different x coordinates' do
-      p2 = group.new_point [5, 5]
-      expect(p1.hash).to_not eq p2.hash
-    end
-
-    it 'usually differs for two points with different y coordinates' do
-      p2 = group.new_point [4, 4]
-      expect(p1.hash).to_not eq p2.hash
-    end
-
-    it 'usually differs for two points on different curves' do
-      p2 = ECDSA::Group::Secp112r2.new_point [4, 5]
-      expect(p1.hash).to_not eq p2.hash
-    end
+    # There is a small chance these tests will fail due to a hash collision.
+    it_behaves_like 'point comparator', ->(p, q) { p.hash == q.hash }
   end
 end
