@@ -4,6 +4,9 @@ AlignParameters:
 AndOr:
   Enabled: false
 
+ClassLength:
+  Max: 150
+
 CyclomaticComplexity:
   Max: 20
 
