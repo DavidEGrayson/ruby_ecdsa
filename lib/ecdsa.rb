@@ -2,6 +2,7 @@ require_relative 'ecdsa/group'
 require_relative 'ecdsa/signature'
 require_relative 'ecdsa/sign'
 require_relative 'ecdsa/verify'
+require_relative 'ecdsa/recover_public_key'
 require_relative 'ecdsa/format'
 require_relative 'ecdsa/version'
 
