@@ -29,27 +29,16 @@ module ECDSA
   end
 
   # This method is NOT part of the public API of the ECDSA gem.
-  def self.convert_digest_to_integer(digest)
-    case digest
-    when Integer then digest
-    when String then Format::IntegerOctetString.decode(digest)
-    else raise "Invalid digest: #{digest.inspect}"
-    end
-  end
-
-  # This method is NOT part of the public API of the ECDSA gem.
-  def self.leftmost_bits(n, bit_length)
-    if n >= (1 << bit_length)
-      # TODO: implement this
-      raise NotImplementedError, 'Have not yet written code to handle this case'
-    else
-      n
-    end
-  end
-
-  # This method is NOT part of the public API of the ECDSA gem.
   def self.normalize_digest(digest, bit_length)
-    digest_num = convert_digest_to_integer(digest)
-    leftmost_bits(digest_num, bit_length)
+    raise ArgumentError, 'Digest must be a string.' if !digest.is_a?(String)
+
+    digest_bit_length = digest.size * 8
+    num = Format::IntegerOctetString.decode(digest)
+
+    if digest_bit_length <= bit_length
+      num
+    else
+      num >> (digest_bit_length - bit_length)
+    end
   end
 end

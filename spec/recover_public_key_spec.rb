@@ -15,7 +15,8 @@ describe 'ECDSA.recover_public_key' do
   end
 
   let :digest do
-    0xbf91fb0b4f6333774a022bd3078ed6ccd176ee31ed4fb3f9afceb72a37e78786
+    "\xbf\x91\xfb\x0b\x4f\x63\x33\x77\x4a\x02\x2b\xd3\x07\x8e\xd6\xcc" \
+    "\xd1\x76\xee\x31\xed\x4f\xb3\xf9\xaf\xce\xb7\x2a\x37\xe7\x87\x86"
   end
 
   let :signature do
@@ -26,7 +27,7 @@ describe 'ECDSA.recover_public_key' do
   end
 
   it 'can recover the public key from the digest and signature' do
-    points = ECDSA.recover_public_key(group, digest, signature)
+    points = ECDSA.recover_public_key(group, digest, signature).to_a
     expect(points).to include public_key
 
     # Double check the results
@@ -49,4 +50,27 @@ describe 'ECDSA.recover_public_key' do
     expect(result).to be_nil
     expect(points).to include public_key
   end
+
+  it 'also works for a group with cofactor > 1' do
+    group = ECDSA::Group::Secp112r2
+
+    public_key = group.new_point [
+      0xd71fd7d811a5a6a2b9df30a3b56a,
+      0x5017b90f83672ce7328a5782b21d,
+    ]
+
+    signature = ECDSA::Signature.new(
+      0x3033e32c6da60deb1bb08b12e5e8,
+      0x13586519bedfa79711a2aff9f2c0,
+    )
+
+    points = ECDSA.recover_public_key(group, digest, signature).to_a
+    expect(points).to include public_key
+
+    # Double check the results
+    points.each do |point|
+      ECDSA.check_signature!(point, digest, signature)
+    end
+  end
+
 end

@@ -8,7 +8,7 @@ module ECDSA
   # This algorithm comes from Section 4.1.4 of [SEC1](http://www.secg.org/collateral/sec1_final.pdf).
   #
   # @param public_key (Point)
-  # @param digest (String or Integer)
+  # @param digest (String)
   # @param signature (Signature)
   # @return true if the ECDSA signature if valid, returns false otherwise.
   def self.valid_signature?(public_key, digest, signature)
@@ -23,7 +23,7 @@ module ECDSA
   # This algorithm comes from Section 4.1.4 of [SEC1](http://www.secg.org/collateral/sec1_final.pdf).
   #
   # @param public_key (Point)
-  # @param digest (String or Integer)
+  # @param digest (String)
   # @param signature (Signature)
   # @return true
   def self.check_signature!(public_key, digest, signature)
