@@ -30,15 +30,19 @@ module ECDSA
 
   # This method is NOT part of the public API of the ECDSA gem.
   def self.normalize_digest(digest, bit_length)
-    raise ArgumentError, 'Digest must be a string.' if !digest.is_a?(String)
+    if digest.is_a?(String)
+      digest_bit_length = digest.size * 8
+      num = Format::IntegerOctetString.decode(digest)
 
-    digest_bit_length = digest.size * 8
-    num = Format::IntegerOctetString.decode(digest)
-
-    if digest_bit_length <= bit_length
-      num
+      if digest_bit_length <= bit_length
+        num
+      else
+        num >> (digest_bit_length - bit_length)
+      end
+    elsif digest.is_a?(Integer)
+      digest
     else
-      num >> (digest_bit_length - bit_length)
+      raise ArgumentError, "Digest must be a string or integer."
     end
   end
 end

@@ -17,7 +17,7 @@ module ECDSA
   # This algorithm comes from Section 4.1.6 of [SEC1 2.0](http://www.secg.org/download/aid-780/sec1-v2.pdf)
   #
   # @param group (Group)
-  # @param digest (String)
+  # @param digest (String or Integer)
   # @param signature (Signature)
   def self.recover_public_key(group, digest, signature)
     return enum_for(:recover_public_key, group, digest, signature) if !block_given?
