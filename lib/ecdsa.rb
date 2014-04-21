@@ -42,7 +42,7 @@ module ECDSA
     elsif digest.is_a?(Integer)
       digest
     else
-      raise ArgumentError, "Digest must be a string or integer."
+      raise ArgumentError, 'Digest must be a string or integer.'
     end
   end
 end

@@ -28,4 +28,19 @@ describe ECDSA do
       expect(ECDSA.bit_length(0x8000)).to eq 16
     end
   end
+
+  describe '.normalize_digest' do
+    it 'does nothing to integers' do
+      expect(ECDSA.normalize_digest(0x1234, 8)).to eq 0x1234
+    end
+
+    it 'takes the leftmost bits of strings' do
+      expect(ECDSA.normalize_digest("\x24\xAA", 7)).to eq 0x12
+    end
+
+    it 'raises an exception if the input is not an integer or string' do
+      expect { ECDSA.normalize_digest(:a, 1) }.to raise_error ArgumentError,
+        'Digest must be a string or integer.'
+    end
+  end
 end
