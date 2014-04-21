@@ -26,6 +26,7 @@ Bug fixes:
 - Nicer exception error messages from `ECDSA.check_signature!`.  They start with
   "Invalid signature: " so they could be understood in the context of a larger
   application without looking at the class of the exception.
+- `ECDSA.sign` returns nil if r is zero.
 
 1.0.0
 ----

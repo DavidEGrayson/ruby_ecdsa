@@ -30,6 +30,9 @@ module ECDSA
     # Steps 2 and 3
     point_field = PrimeField.new(group.order)
     r = point_field.mod(r_point.x)
+    if r.zero?
+      return nil
+    end
 
     # Step 4, calculating the hash, was already performed by the caller.
 
@@ -38,10 +41,7 @@ module ECDSA
 
     # Step 6
     s = point_field.mod(point_field.inverse(temporary_key) * (e + r * private_key))
-
     if s.zero?
-      # We need to go back to step 1, so the caller should generate another
-      # random number temporary_key and try again.
       return nil
     end
 
