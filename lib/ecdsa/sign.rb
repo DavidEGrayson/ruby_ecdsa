@@ -30,9 +30,7 @@ module ECDSA
     # Steps 2 and 3
     point_field = PrimeField.new(group.order)
     r = point_field.mod(r_point.x)
-    if r.zero?
-      return nil
-    end
+    return nil if r.zero?
 
     # Step 4, calculating the hash, was already performed by the caller.
 
@@ -41,9 +39,7 @@ module ECDSA
 
     # Step 6
     s = point_field.mod(point_field.inverse(temporary_key) * (e + r * private_key))
-    if s.zero?
-      return nil
-    end
+    return nil if s.zero?
 
     Signature.new r, s
   end

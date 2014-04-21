@@ -57,6 +57,12 @@ describe ECDSA::Point do
         expect(group.infinity.add_to_point(group.generator)).to eq group.generator
       end
     end
+
+    context 'when adding the generator to itself' do
+      it 'returns the double' do
+        expect(group.generator.add_to_point(group.generator)).to eq group.generator.double
+      end
+    end
   end
 
   describe '#negate' do

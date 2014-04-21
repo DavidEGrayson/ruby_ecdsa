@@ -10,7 +10,7 @@ describe ECDSA::Signature do
   it 'has the right s value' do
     expect(signature.s).to eq 55
   end
-  
+
   it 'has the right components' do
     expect(signature.components).to eq [44, 55]
   end

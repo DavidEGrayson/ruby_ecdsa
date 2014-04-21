@@ -31,6 +31,11 @@ describe ECDSA::Group do
     it 'when given :infinity, returns the infinity point' do
       expect(group.new_point(:infinity)).to eq group.infinity
     end
+
+    it 'raises an exception when given something invalid' do
+      expect { group.new_point(:smile) }.to raise_error ArgumentError,
+        'Invalid point specifier :smile.'
+    end
   end
 
   describe '#solve_for_y' do

@@ -9,7 +9,7 @@ describe 'ECDSA.sign' do
     point_field = ECDSA::PrimeField.new(group.order)
     r = point_field.mod(r_point.x)
     e = -(r * private_key)
-    
+
     expect(ECDSA.sign(group, private_key, e, temporary_key)).to eq nil
   end
 end
