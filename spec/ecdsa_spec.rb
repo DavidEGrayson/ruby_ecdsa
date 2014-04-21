@@ -42,5 +42,9 @@ describe ECDSA do
       expect { ECDSA.normalize_digest(:a, 1) }.to raise_error ArgumentError,
         'Digest must be a string or integer.'
     end
+    
+    it 'normalizes string encoding' do
+      expect(ECDSA.normalize_digest("\xAB\xCD".force_encoding('UTF-16LE'), 8)).to eq 0xAB
+    end
   end
 end
