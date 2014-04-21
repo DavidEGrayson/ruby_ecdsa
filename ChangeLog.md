@@ -32,16 +32,16 @@ New features:
 - `Group#valid_public_key?` and `Group#partially_valid_public_key?` were added.
   They are different from `Group#include?` because they both return false for
   the infinity point and `Group#valid_public_key?` checks to make sure
-  that the point can be expressed as generator point times a scalar.
-- `PrimeField#square_roots` works no matter what prime is used for the field.
+  that the point can be expressed as the generator point times a scalar.
+- `PrimeField#square_roots` now works all prime fields.
   
 Bug fixes:
 
 - The signing and verification operations now properly take the leftmost bits
   of the digest.  (This caused the breaking change above.)
 - Nicer exception error messages from `ECDSA.check_signature!`.  They start with
-  "Invalid signature: " so they can be integrated into a larger application
-  easily without showing the user bizarre error messages.
+  "Invalid signature: " so they could be understood in the context of a larger
+  application without looking at the class of the exception.
 
 1.0.0
 ----
