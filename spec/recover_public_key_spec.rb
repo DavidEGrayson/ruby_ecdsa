@@ -55,13 +55,13 @@ describe 'ECDSA.recover_public_key' do
     group = ECDSA::Group::Secp112r2
 
     public_key = group.new_point [
-      0xd71fd7d811a5a6a2b9df30a3b56a,
-      0x5017b90f83672ce7328a5782b21d,
+      0xaa4ae790df9561195766c97dc1be,
+      0x0cf3d4295fb062d227e8932f6e4c,
     ]
 
     signature = ECDSA::Signature.new(
-      0x3033e32c6da60deb1bb08b12e5e8,
-      0x13586519bedfa79711a2aff9f2c0,
+      0x041ef05c6308e84bef9bb55255a2,
+      0x33d38ed36ad0b94a182455bb3dac,
     )
 
     points = ECDSA.recover_public_key(group, digest, signature).to_a

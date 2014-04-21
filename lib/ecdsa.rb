@@ -31,6 +31,7 @@ module ECDSA
   # This method is NOT part of the public API of the ECDSA gem.
   def self.normalize_digest(digest, bit_length)
     if digest.is_a?(String)
+      digest = digest.dup.force_encoding('BINARY')
       digest_bit_length = digest.size * 8
       num = Format::IntegerOctetString.decode(digest)
 
