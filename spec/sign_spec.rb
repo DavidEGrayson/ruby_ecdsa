@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe 'ECDSA.sign' do
+  it 'returns nil if r is zero' do
+    expect(ECDSA.sign(Davidp16d1, 333, 222, 1)).to eq nil
+  end
+
   it 'returns nil if s is zero' do
     group = ECDSA::Group::Secp112r2
     private_key = 1
