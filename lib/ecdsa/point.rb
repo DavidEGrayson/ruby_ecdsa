@@ -83,6 +83,9 @@ module ECDSA
       raise "Failed to add #{inspect} to #{other.inspect}: No addition rules matched."
     end
 
+    # (see #add_to_point)
+    alias_method :+, :add_to_point
+
     # Returns the additive inverse of the point.
     #
     # @return (Point)
@@ -122,6 +125,9 @@ module ECDSA
       end
       result
     end
+
+    # (see #multiply_by_scalar)
+    alias_method :*, :multiply_by_scalar
 
     # Compares this point to another.
     #
