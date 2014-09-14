@@ -21,7 +21,7 @@ describe ECDSA::PrimeField do
   describe '#mod' do
     it 'returns the integer modulo the prime' do
       n = double('num')
-      n.should_receive(:%).with(prime).and_return(4)
+      expect(n).to receive(:%).with(prime).and_return(4)
       expect(field.mod(n)).to eq 4
     end
   end
