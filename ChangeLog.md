@@ -5,6 +5,13 @@ This gem follows [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html)
 All classes and public methods are part of the public API, unless explicitly noted otherwise
 in their documentation.
 
+1.2.0
+----
+Released on 2014-09-14.
+
+- Adds aliases to `ECDSA::Point` so you can do point arithmetic with `+` and `*`
+  operators.  (Thanks to Stephen McCarthy.)
+
 1.1.0
 ----
 Released on 2014-04-20.
@@ -18,7 +25,7 @@ New features:
   the infinity point and `Group#valid_public_key?` checks to make sure
   that the point can be expressed as the generator point times a scalar.
 - `PrimeField#square_roots` now works all prime fields.
-  
+
 Bug fixes:
 
 - The signing and verification operations now properly take the leftmost bits
