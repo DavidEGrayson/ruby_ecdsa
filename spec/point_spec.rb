@@ -21,6 +21,10 @@ describe ECDSA::Point do
     it 'complains if the argument is negative' do
       expect { group.generator.multiply_by_scalar(-3) }.to raise_error ArgumentError, 'Scalar is negative.'
     end
+
+    it 'is aliased to :*' do
+      expect(group.generator.method(:*)).to eq group.generator.method(:multiply_by_scalar)
+    end
   end
 
   describe '#coords' do
@@ -62,6 +66,10 @@ describe ECDSA::Point do
       it 'returns the double' do
         expect(group.generator.add_to_point(group.generator)).to eq group.generator.double
       end
+    end
+
+    it 'is aliased to :+' do
+      expect(group.generator.method(:+)).to eq group.generator.method(:add_to_point)
     end
   end
 
