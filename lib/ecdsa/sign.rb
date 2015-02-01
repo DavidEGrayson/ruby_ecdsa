@@ -14,7 +14,7 @@ module ECDSA
   #   like SHA2.  The same algorithm must be used when verifying the signature.
   # @param temporary_key (Integer)
   #   A temporary private key.
-  #   This is also known as "k" in some documents.
+  #   This is also known as "k" or "nonce".
   #   Warning: Never use the same `temporary_key` value twice for two different messages
   #   or else it will be easy for someone to calculate your private key.
   #   The `temporary_key` should be generated with a secure random number generator.
