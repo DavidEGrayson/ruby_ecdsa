@@ -1,7 +1,4 @@
 module ECDSA
-  class SZeroError < StandardError
-  end
-
   # Produces an ECDSA signature.
   #
   # This algorithm comes from section 4.1.3 of [SEC1](http://www.secg.org/collateral/sec1_final.pdf).
