@@ -6,6 +6,8 @@ require_relative 'ecdsa/recover_public_key'
 require_relative 'ecdsa/format'
 require_relative 'ecdsa/version'
 
+# TODO: fix the broken URLs we have for SEC1 and SEC2 all over the code base
+
 # The top-level module for the ECDSA gem.
 module ECDSA
   # This method is NOT part of the public API of the ECDSA gem.

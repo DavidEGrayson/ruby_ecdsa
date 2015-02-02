@@ -20,6 +20,9 @@ module ECDSA
   #   signature will be 0, in which case the method returns nil.  If that happens,
   #   you should generate a new temporary key and try again.
   def self.sign(group, private_key, digest, temporary_key)
+    # TODO: add an option for specifying that the s value should be low,
+    #  which is needed by systems like Bitcoin:  https://github.com/bitcoin/bips/blob/master/bip-0062.mediawiki#low-s-values-in-signatures
+
     # Second part of step 1: Select ephemeral elliptic curve key pair
     # temporary_key was already selected for us by the caller
     r_point = group.new_point temporary_key
