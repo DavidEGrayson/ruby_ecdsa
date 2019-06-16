@@ -137,7 +137,7 @@ module ECDSA
       self.class.send(:jacobi, n, prime)
     end
 
-    # This is Algorithm 1 from http://math.stanford.edu/~jbooher/expos/sqr_qnr.pdf
+    # This is Algorithm 1 from https://www.math.arizona.edu/~jeremybooher/expos/sqr_qnr.pdf
     # It is also Algorithm 3.36 from http://cacr.uwaterloo.ca/hac/
     # The algorithm assumes that its input actually does have a square root.
     # To get around that, we double check the answer after running the algorithm to make
