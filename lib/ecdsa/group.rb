@@ -68,7 +68,8 @@ module ECDSA
 
     # Creates a new point.
     # The argument can either be an array of integers representing the
-    # coordinates, with x first, or it can be `:infinity`.
+    # coordinates with x first, or it can be an integer (private key),
+    # or it can be `:infinity`.
     def new_point(p)
       case p
       when :infinity
