@@ -25,10 +25,17 @@ module ECDSA
 
     # Second part of step 1: Select ephemeral elliptic curve key pair
     # temporary_key was already selected for us by the caller
-    r_point = group.new_point temporary_key
+    point_field = PrimeField.new(group.order)
+    k = point_field.mod(temporary_key)
+    ks = k + group.order
+    kt = ks + group.order
+    if ECDSA.bit_length(ks) == ECDSA.bit_length(group.order)
+      r_point = group.new_point kt
+    else
+      r_point = group.new_point ks
 
     # Steps 2 and 3
-    point_field = PrimeField.new(group.order)
+    
     r = point_field.mod(r_point.x)
     return nil if r.zero?
 
